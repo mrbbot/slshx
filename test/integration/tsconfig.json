@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.json",
+  "include": [
+    "fixture.ts",
+    "../../types"
+  ],
+  "exclude": [
+    "*.spec.ts",
+    "helpers.ts"
+  ]
+}
