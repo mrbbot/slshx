@@ -1,0 +1,6 @@
+.DS_Store
+.idea
+.parcel-cache
+dist
+dist-types
+node_modules

@@ -1,0 +1,59 @@
+{
+  "name": "slshx",
+  "version": "0.1.0",
+  "description": "Strongly-typed Discord commands on Cloudflare Workers",
+  "type": "module",
+  "exports": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
+  "files": [
+    "dist/src"
+  ],
+  "scripts": {
+    "clean": "rimraf './dist' './dist-types'",
+    "build": "node scripts/build.mjs",
+    "build:types": "tsc && node scripts/types.mjs",
+    "watch": "node scripts/build.mjs watch",
+    "test": "npm run build && ava",
+    "lint": "eslint 'src/**/*.ts' 'scripts/**/*.{js,mjs}' 'types/*.ts'",
+    "lint:fix": "npm run lint -- --fix",
+    "prepublishOnly": "npm run clean && npm run lint && npm run build && npm run build:types && npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrbbot/slshx.git"
+  },
+  "keywords": [
+    "discord",
+    "slash",
+    "commands",
+    "cloudflare",
+    "workers"
+  ],
+  "author": "MrBBot",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mrbbot/slshx/issues"
+  },
+  "homepage": "https://github.com/mrbbot/slshx#readme",
+  "devDependencies": {
+    "@ava/typescript": "^3.0.1",
+    "@cloudflare/workers-types": "^3.3.0",
+    "@microsoft/api-extractor": "^7.19.2",
+    "@types/node": "^17.0.4",
+    "@typescript-eslint/eslint-plugin": "^5.8.0",
+    "@typescript-eslint/parser": "^5.8.0",
+    "ava": "4.0.0-rc.1",
+    "esbuild": "^0.13.5",
+    "eslint": "^8.5.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-prettier": "^4.0.0",
+    "miniflare": "^2.0.0-rc.4",
+    "prettier": "^2.4.1",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.5.4"
+  },
+  "dependencies": {
+    "discord-api-types": "^0.25.2"
+  }
+}
