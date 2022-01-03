@@ -32,7 +32,9 @@ export function createHandler<Env>(opts: Options<Env>) {
     }
 
     if (!opts.applicationId || !publicKeyData) {
-      throw new Error("Handler requires applicationId and publicKey to be set");
+      throw new Error(
+        "Handler requires applicationId and applicationPublicKey to be set"
+      );
     }
     const hopts = opts as HandlerOptions<Env>;
     const interaction = await validateInteraction(publicKeyData, request);
