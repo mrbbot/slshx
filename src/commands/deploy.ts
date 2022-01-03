@@ -38,7 +38,6 @@ export async function deployCommands<Env>(opts: Options<Env>) {
     );
   }
 
-  // TODO: Miniflare --allow-global-async-io or compatability flag?
   const s = commands.length === 1 ? "" : "s";
   if (opts.testServerId) {
     // Only check commands different when deploying to a guild...

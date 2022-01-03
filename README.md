@@ -44,6 +44,10 @@ export default { fetch: handler };
 
 ## Quick*ish* Start
 
+> ⚠️ To enable auto-deployments on reload, Slshx requires the
+> [`--global-async-io` Miniflare flag](https://v2.miniflare.dev/core/standards#global-functionality-limits)
+> to be set.
+
 1. Clone the [`slshx-starter`](https://github.com/mrbbot/slshx-starter)
    repository. This includes a [Miniflare](https://v2.miniflare.dev/) and
    [`esbuild`](https://esbuild.github.io/) setup that removes unneeded local
@@ -170,6 +174,7 @@ type Env = { KV_NAMESPACE: KVNamespace; SECRET: string };
 function add(): CommandHandler {
   // ✅: must call `useDescription`
   // ✅: must call hooks before returning handler
+  // ✅: must call hooks in the same order each time
   useDescription("Adds two numbers together");
   const a = useNumber("a", "1st number", { required: true });
   const b = useNumber("b", "2nd number", { required: true });
