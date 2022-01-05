@@ -700,7 +700,7 @@ function file(): CommandHandler {
 
 ### Embeds
 
-Message can include up to 10
+Messages can include up to 10
 [rich-embeds](https://discord.com/developers/docs/resources/channel#embed-object).
 Embeds can include all sorts of things, including a title, description, URL,
 media or fields. Media can reference attachments using the `attachment://`
