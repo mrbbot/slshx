@@ -1,7 +1,10 @@
 import type {
   APIEmbed,
+  APIEmbedAuthor,
   APIEmbedField,
+  APIEmbedFooter,
   APIEmbedImage,
+  APIEmbedProvider,
 } from "discord-api-types/v9";
 import { Child, isEmptyChild } from "../helpers";
 import { $field } from "./Field";
@@ -63,6 +66,37 @@ function normaliseMedia(
   };
 }
 
+function normaliseFooter(
+  props?: string | EmbedFooterProps
+): APIEmbedFooter | undefined {
+  if (!props) return;
+  if (typeof props === "string") return { text: props };
+  return {
+    text: props.text,
+    icon_url: props.iconUrl,
+    proxy_icon_url: props.proxyIconUrl,
+  };
+}
+
+function normaliseProvider(
+  props?: string | EmbedProviderProps
+): APIEmbedProvider | undefined {
+  return typeof props === "string" ? { name: props } : props;
+}
+
+function normaliseAuthor(
+  props?: string | EmbedAuthorProps
+): APIEmbedAuthor | undefined {
+  if (!props) return;
+  if (typeof props === "string") return { name: props };
+  return {
+    name: props.name,
+    url: props.url,
+    icon_url: props.iconUrl,
+    proxy_icon_url: props.proxyIconUrl,
+  };
+}
+
 export function Embed(props: EmbedProps): APIEmbed & { [$embed]: true } {
   let description = undefined;
   const fields: APIEmbedField[] = [];
@@ -92,14 +126,9 @@ export function Embed(props: EmbedProps): APIEmbed & { [$embed]: true } {
     thumbnail: normaliseMedia(props.thumbnail),
     video: normaliseMedia(props.video),
 
-    footer:
-      typeof props.footer === "string" ? { text: props.footer } : props.footer,
-    provider:
-      typeof props.provider === "string"
-        ? { name: props.provider }
-        : props.provider,
-    author:
-      typeof props.author === "string" ? { name: props.author } : props.author,
+    footer: normaliseFooter(props.footer),
+    provider: normaliseProvider(props.provider),
+    author: normaliseAuthor(props.author),
 
     fields,
   };

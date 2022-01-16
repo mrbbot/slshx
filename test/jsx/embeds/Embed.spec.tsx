@@ -1,10 +1,5 @@
 import test from "ava";
-import type {
-  APIEmbed,
-  APIEmbedAuthor,
-  APIEmbedFooter,
-  APIEmbedProvider,
-} from "discord-api-types/v9";
+import type { APIEmbed } from "discord-api-types/v9";
 import { $embed, $field, Embed, Field, createElement } from "../../../src";
 import { emptyEmbed } from "../helpers";
 
@@ -76,21 +71,38 @@ test("creates embed with footer, provider or author", (t) => {
   let embed: APIEmbed = (
     <Embed footer="Footer" provider="Provider" author="Author" />
   );
-  const footer: APIEmbedFooter = { text: "Footer" };
-  const provider: APIEmbedProvider = { name: "Provider" };
-  const author: APIEmbedAuthor = { name: "Author" };
   t.deepEqual(embed, {
     ...emptyEmbed,
     [$embed]: true,
-    footer,
-    provider,
-    author,
+    footer: { text: "Footer" },
+    provider: { name: "Provider" },
+    author: { name: "Author" },
   });
 
-  embed = <Embed footer={footer} provider={provider} author={author} />;
-  t.is(embed.footer, footer);
-  t.is(embed.provider, provider);
-  t.is(embed.author, author);
+  embed = (
+    <Embed
+      footer={{ text: "Footer", iconUrl: "icon", proxyIconUrl: "proxy" }}
+      provider={{ name: "Provider", url: "url" }}
+      author={{
+        name: "Author",
+        url: "url",
+        iconUrl: "icon",
+        proxyIconUrl: "proxy",
+      }}
+    />
+  );
+  t.deepEqual(embed, {
+    ...emptyEmbed,
+    [$embed]: true,
+    footer: { text: "Footer", icon_url: "icon", proxy_icon_url: "proxy" },
+    provider: { name: "Provider", url: "url" },
+    author: {
+      name: "Author",
+      url: "url",
+      icon_url: "icon",
+      proxy_icon_url: "proxy",
+    },
+  });
 });
 
 test("creates embed with fields", (t) => {
