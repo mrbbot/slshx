@@ -1,8 +1,8 @@
 import type { APIApplicationCommandAutocompleteInteraction } from "discord-api-types/payloads/v9/_interactions/autocomplete";
 import type {
   APIApplicationCommandInteraction,
+  APIApplicationCommandInteractionDataBasicOption,
   APIApplicationCommandInteractionDataOption,
-  APIApplicationCommandInteractionDataOptionWithValues,
   APIChatInputApplicationCommandInteractionDataResolved,
   APIInteractionResponseChannelMessageWithSource,
   APIInteractionResponseDeferredChannelMessageWithSource,
@@ -37,7 +37,7 @@ export function matchCommand<Env>(
 ): [
   commandId: string,
   command?: AnyCommand<Env>,
-  options?: Map<string, APIApplicationCommandInteractionDataOptionWithValues>
+  options?: Map<string, APIApplicationCommandInteractionDataBasicOption>
 ] {
   if (!interaction.data) return ["", undefined, undefined];
   const type = interaction.data.type;
@@ -70,7 +70,7 @@ export function matchCommand<Env>(
   }
 
   let options:
-    | Map<string, APIApplicationCommandInteractionDataOptionWithValues>
+    | Map<string, APIApplicationCommandInteractionDataBasicOption>
     | undefined;
   if (command && data.options) {
     options = new Map();

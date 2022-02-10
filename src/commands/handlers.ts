@@ -1,5 +1,5 @@
 import type {
-  APIApplicationCommandInteractionDataOptionWithValues,
+  APIApplicationCommandInteractionDataBasicOption,
   APIChatInputApplicationCommandInteractionDataResolved,
 } from "discord-api-types/v9";
 import { AutocompleteHandler } from "./hooks";
@@ -9,7 +9,7 @@ import { AnyCommand, AnyCommandHandler, ComponentHandler } from "./types";
 export function instantiateCommandHandler<Env>(
   commandId: string,
   command: AnyCommand<Env>,
-  options?: Map<string, APIApplicationCommandInteractionDataOptionWithValues>,
+  options?: Map<string, APIApplicationCommandInteractionDataBasicOption>,
   resolved?: APIChatInputApplicationCommandInteractionDataResolved
 ): AnyCommandHandler<Env> {
   STATE.commandId = commandId;
@@ -51,7 +51,7 @@ export function instantiateComponentHandler<Env>(
 export function instantiateAutocompleteHandler<Env>(
   commandId: string,
   command: AnyCommand<Env>,
-  options?: Map<string, APIApplicationCommandInteractionDataOptionWithValues>
+  options?: Map<string, APIApplicationCommandInteractionDataBasicOption>
 ): AutocompleteHandler<string | number, Env> | undefined {
   STATE.commandId = commandId;
   STATE.interactionOptions = options;

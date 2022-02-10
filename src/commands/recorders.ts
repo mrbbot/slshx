@@ -103,7 +103,7 @@ function recordChatInputCommands<Env>(
             type: ApplicationCommandOptionType.SUB_COMMAND_GROUP,
             name: subGroupName,
             description: subGroupName,
-            options: subGroupCommandOptions,
+            options: subGroupCommandOptions as any,
           });
         }
       }

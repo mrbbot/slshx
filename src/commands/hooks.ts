@@ -160,7 +160,7 @@ function useOption<T, Env>(
       description,
       required: options?.required,
       autocomplete: options?.autocomplete && true,
-      choices: normaliseChoices(options?.choices as any),
+      choices: normaliseChoices(options?.choices as any) as any,
       channel_types: options?.types as any,
       min_value: options?.min,
       max_value: options?.max,

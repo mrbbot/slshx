@@ -54,6 +54,6 @@
     "typescript": "^4.5.4"
   },
   "dependencies": {
-    "discord-api-types": "^0.25.2"
+    "discord-api-types": "^0.27.0"
   }
 }

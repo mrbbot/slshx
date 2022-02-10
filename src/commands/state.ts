@@ -1,5 +1,5 @@
 import type {
-  APIApplicationCommandInteractionDataOptionWithValues,
+  APIApplicationCommandInteractionDataBasicOption,
   APIApplicationCommandOption,
   APIChatInputApplicationCommandInteractionDataResolved,
 } from "discord-api-types/v9";
@@ -15,7 +15,7 @@ interface State {
 
   interactionOptions?: Map<
     string,
-    APIApplicationCommandInteractionDataOptionWithValues
+    APIApplicationCommandInteractionDataBasicOption
   >;
   interactionResolved?: APIChatInputApplicationCommandInteractionDataResolved;
 
