@@ -12,7 +12,10 @@ export interface APIBearerAuth {
   bearer: string;
   expires?: number;
 }
-export type APIAuth = APIBasicAuth | APIBearerAuth;
+export interface APIBotAuth {
+  bot: string;
+}
+export type APIAuth = APIBasicAuth | APIBearerAuth | APIBotAuth;
 
 export class APIError extends Error {
   constructor(
@@ -53,10 +56,14 @@ export async function call<Body, Result>(
   }
 
   if (auth) {
-    headers["Authorization"] =
-      "bearer" in auth
-        ? `Bearer ${auth.bearer}`
-        : `Basic ${btoa(`${auth.username}:${auth.password}`)}`;
+    if ("bearer" in auth) {
+      headers["Authorization"] = `Bearer ${auth.bearer}`;
+    } else if ("bot" in auth) {
+      headers["Authorization"] = `Bot ${auth.bot}`;
+    } else {
+      const credentials = btoa(`${auth.username}:${auth.password}`);
+      headers["Authorization"] = `Basic ${credentials}`;
+    }
   }
 
   const res = await fetch(url, init);
