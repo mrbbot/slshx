@@ -15,6 +15,10 @@ test("responds with APPLICATION_COMMAND_AUTOCOMPLETE_RESULT", async (t) => {
       name: "autocomplete",
       options: [
         { name: "i", type: 4, value: 42 }, // 4 = ApplicationCommandOptionType.INTEGER
+        { name: "user", type: 6, value: "1" }, // 6 = ApplicationCommandOptionType.USER
+        { name: "channel", type: 7, value: "2" }, // 7 = ApplicationCommandOptionType.CHANNEL
+        { name: "role", type: 8, value: "3" }, // 8 = ApplicationCommandOptionType.ROLE
+        { name: "mentionable", type: 9, value: "4" }, // 9 = ApplicationCommandOptionType.MENTIONABLE
         { name: "s", type: 3, value: "I know a song...", focused: true }, // 3 = ApplicationCommandOptionType.STRING
         { name: "n", type: 10, value: 3.141 }, // 10 = ApplicationCommandOptionType.NUMBER
       ],

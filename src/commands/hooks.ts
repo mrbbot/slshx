@@ -283,7 +283,9 @@ export function useUser<Env>(
     description,
     options
   );
-  return STATE.interactionResolved?.users?.[id!] ?? null;
+  // Autocomplete interactions may not include resolved, so return just the ID
+  const fallback = id === null ? null : ({ id } as APIUser);
+  return STATE.interactionResolved?.users?.[id!] ?? fallback;
 }
 
 export function useChannel<Env>(
@@ -308,7 +310,10 @@ export function useChannel<Env>(
     description,
     options
   );
-  return STATE.interactionResolved?.channels?.[id!] ?? null;
+  // Autocomplete interactions may not include resolved, so return just the ID
+  const fallback =
+    id === null ? null : ({ id } as APIInteractionDataResolvedChannel);
+  return STATE.interactionResolved?.channels?.[id!] ?? fallback;
 }
 
 export function useRole<Env>(
@@ -333,7 +338,9 @@ export function useRole<Env>(
     description,
     options
   );
-  return STATE.interactionResolved?.roles?.[id!] ?? null;
+  // Autocomplete interactions may not include resolved, so return just the ID
+  const fallback = id === null ? null : ({ id } as APIRole);
+  return STATE.interactionResolved?.roles?.[id!] ?? fallback;
 }
 
 export function useMentionable<Env>(
@@ -358,10 +365,12 @@ export function useMentionable<Env>(
     description,
     options
   );
+  // Autocomplete interactions may not include resolved, so return just the ID
+  const fallback = id === null ? null : ({ id } as APIUser | APIRole);
   return (
     STATE.interactionResolved?.users?.[id!] ??
     STATE.interactionResolved?.roles?.[id!] ??
-    null
+    fallback
   );
 }
 

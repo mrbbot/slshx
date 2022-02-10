@@ -166,6 +166,13 @@ function files(): CommandHandler {
 function autocomplete(): CommandHandler {
   useDescription("Autocompletes an option");
   const i = useInteger("i", "Integer", { required: true, min: 0, max: 100 });
+
+  // Check options that would usually be resolved fully just contain id
+  const user = useUser("user", "User");
+  const channel = useChannel("channel", "Channel");
+  const role = useRole("role", "Role");
+  const mentionable = useMentionable("mentionable", "Mentionable");
+
   const s: string = useString<Env>("s", "String", {
     required: true,
     async autocomplete(interaction, env, ctx) {
@@ -173,6 +180,11 @@ function autocomplete(): CommandHandler {
       t.is(interaction.data?.name, "autocomplete");
       t.is(env.KEY, "value");
       t.is(typeof ctx.waitUntil, "function");
+
+      t.deepEqual(user, { id: "1" } as any);
+      t.deepEqual(channel, { id: "2" } as any);
+      t.deepEqual(role, { id: "3" } as any);
+      t.deepEqual(mentionable, { id: "4" } as any);
 
       return [
         `integer ${i}`, // before

@@ -282,6 +282,26 @@ export const EXPECTED_COMMANDS: RESTPostAPIApplicationCommandsJSONBody[] = [
         max_value: 100,
       },
       {
+        type: 6,
+        name: "user",
+        description: "User",
+      },
+      {
+        type: 7,
+        name: "channel",
+        description: "Channel",
+      },
+      {
+        type: 8,
+        name: "role",
+        description: "Role",
+      },
+      {
+        type: 9,
+        name: "mentionable",
+        description: "Mentionable",
+      },
+      {
         type: 3,
         name: "s",
         description: "String",
