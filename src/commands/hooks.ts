@@ -11,52 +11,60 @@ import type {
 import { ApplicationCommandOptionType } from "../api";
 import { Awaitable, ValueOf } from "../helpers";
 import { STATE } from "./state";
-import { ComponentHandler } from "./types";
+import { ComponentHandler, ModalHandler } from "./types";
 
 export function useDescription(description: string): void {
   if (!STATE.commandId) {
     throw new Error(`Hooks must be called inside a command`);
   }
-  if (STATE.recordingOptions) {
-    STATE.recordingDescription = description;
-  }
+  if (STATE.recordingOptions) STATE.recordingDescription = description;
 }
 
 export function useDefaultPermission(permission: boolean): void {
   if (!STATE.commandId) {
     throw new Error(`Hooks must be called inside a command`);
   }
-  if (STATE.recordingOptions) {
-    STATE.recordingDefaultPermission = permission;
-  }
+  if (STATE.recordingOptions) STATE.recordingDefaultPermission = permission;
 }
 
 // ========================================================================================================
-// | Message Component Hooks:                                                                             |
+// | Message Component & Modal Hooks:                                                                     |
 // | https://discord.com/developers/docs/interactions/message-components#component-object-component-types |
 // ========================================================================================================
 
-function useComponent<Env>(handler: ComponentHandler<Env>): string {
+function useCustomId(): string {
   if (!STATE.commandId) {
     throw new Error(`Hooks must be called inside a command`);
   }
-  const customId = `${STATE.commandId}$${STATE.componentHandlerCount++}#`;
-  if (STATE.componentHandlers) {
-    STATE.componentHandlers.set(customId, handler as any);
-  }
-  return customId;
+  return `${STATE.commandId}$${STATE.componentHandlerCount++}#`;
 }
 
 export function useButton<Env>(
   handler: ComponentHandler<Env, APIMessageButtonInteractionData>
-) {
-  return useComponent(handler as any);
+): string {
+  const customId = useCustomId();
+  STATE.componentHandlers?.set(customId, handler as any);
+  return customId;
 }
 
 export function useSelectMenu<Env>(
   handler: ComponentHandler<Env, APIMessageSelectMenuInteractionData>
-) {
-  return useComponent(handler as any);
+): string {
+  const customId = useCustomId();
+  STATE.componentHandlers?.set(customId, handler as any);
+  return customId;
+}
+
+export function useTextInput(): [id: string, value: string] {
+  const customId = useCustomId();
+  const value = STATE.interactionComponentData?.get(customId) ?? "";
+  return [customId, value];
+}
+
+export function useModal<Env>(handler: ModalHandler<Env>): string {
+  const customId = useCustomId();
+  STATE.modalHandlers?.set(customId, handler as any);
+  return customId;
 }
 
 // ====================================================================================================================================

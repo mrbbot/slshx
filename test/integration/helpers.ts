@@ -119,6 +119,7 @@ export const INTERACTION: APIBaseInteraction<number, undefined> = {
   type: -1,
   application_id: "app",
   token: "".padStart(200, "a"),
+  locale: "en-GB",
 };
 
 export const USER: APIUser = {
@@ -312,6 +313,7 @@ export const EXPECTED_COMMANDS: RESTPostAPIApplicationCommandsJSONBody[] = [
     ],
   },
   { name: "buttons", description: "Buttons and select menus!" },
+  { name: "modals", description: "Modals!" },
   {
     name: "User Command",
     type: 2, // ApplicationCommandType.USER

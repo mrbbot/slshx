@@ -1,10 +1,12 @@
 import {
+  $modal,
   $update,
   ButtonStyle,
   ChannelType,
   CommandHandler,
   ComponentType,
   MessageCommandHandler,
+  TextInputStyle,
   UserCommandHandler,
   createFollowupMessage,
   createHandler,
@@ -15,10 +17,12 @@ import {
   useDescription,
   useInteger,
   useMentionable,
+  useModal,
   useNumber,
   useRole,
   useSelectMenu,
   useString,
+  useTextInput,
   useUser,
 } from "../../src";
 
@@ -302,6 +306,67 @@ function buttons(): CommandHandler {
   });
 }
 
+function modals(): CommandHandler {
+  useDescription("Modals!");
+  const [shortId, shortValue] = useTextInput();
+  const [longId, longValue] = useTextInput();
+  const modalId = useModal<Env>((interaction, env, ctx) => {
+    // Check values are correct, with EXTRA_DATA added by us
+    t.is(interaction.data!.custom_id, "slshx:1/modals$2#EXTRA_DATA");
+    t.is(env.KEY, "value");
+    t.is(typeof ctx.waitUntil, "function");
+    return { content: `Short: "${shortValue}" Long: "${longValue}"` };
+  });
+
+  // Check IDs always correct, when recording and handling interactions
+  // (1 = ApplicationCommandType.CHAT_INPUT)
+  t.is(shortId, "slshx:1/modals$0#");
+  t.is(longId, "slshx:1/modals$1#");
+  t.is(modalId, "slshx:1/modals$2#");
+
+  return () => {
+    // Check modal values are empty by default
+    t.is(shortValue, "");
+    t.is(longValue, "");
+
+    return {
+      [$modal]: true,
+      custom_id: modalId + "EXTRA_DATA",
+      title: "Modal Title",
+      components: [
+        {
+          type: ComponentType.ACTION_ROW,
+          components: [
+            {
+              type: ComponentType.TEXT_INPUT,
+              style: TextInputStyle.SHORT,
+              custom_id: shortId,
+              label: "Short",
+              placeholder: "Short Place",
+              min_length: 1,
+              max_length: 10,
+              required: true,
+            },
+          ],
+        },
+        {
+          type: ComponentType.ACTION_ROW,
+          components: [
+            {
+              type: ComponentType.TEXT_INPUT,
+              style: TextInputStyle.PARAGRAPH,
+              custom_id: longId,
+              label: "Long",
+              placeholder: "Long Placeholder",
+              max_length: 1000,
+            },
+          ],
+        },
+      ],
+    };
+  };
+}
+
 function userCommand(): UserCommandHandler {
   const buttonId = useButton((interaction) => {
     t.is(interaction.data.custom_id, "slshx:2/User Command$0#");
@@ -345,6 +410,7 @@ const handler = createHandler({
     files,
     autocomplete,
     buttons,
+    modals,
   },
   userCommands: { "User Command": userCommand },
   messageCommands: { "Message Command": messageCommand },

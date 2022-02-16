@@ -4,7 +4,7 @@ import { InteractionResponseType } from "../api";
 import { instantiateAutocompleteHandler, normaliseChoices } from "../commands";
 import { jsonResponse } from "../helpers";
 import { HandlerOptions } from "../options";
-import { matchCommand } from "./command";
+import { matchCommand } from "./matchers";
 
 export async function handleAutocompleteInteraction<Env>(
   interaction: APIApplicationCommandAutocompleteInteraction,

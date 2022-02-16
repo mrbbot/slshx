@@ -4,7 +4,12 @@ import type {
 } from "discord-api-types/v9";
 import { AutocompleteHandler } from "./hooks";
 import { STATE } from "./state";
-import { AnyCommand, AnyCommandHandler, ComponentHandler } from "./types";
+import {
+  AnyCommand,
+  AnyCommandHandler,
+  ComponentHandler,
+  ModalHandler,
+} from "./types";
 
 export function instantiateCommandHandler<Env>(
   commandId: string,
@@ -71,5 +76,30 @@ export function instantiateAutocompleteHandler<Env>(
     STATE.commandId = undefined;
     STATE.interactionOptions = undefined;
     STATE.autocompleteHandlers = undefined;
+  }
+}
+
+export function instantiateModalHandler<Env>(
+  commandId: string,
+  command: AnyCommand<Env>,
+  customId: string,
+  componentData: Map<string, string>
+): ModalHandler<Env> | undefined {
+  STATE.commandId = commandId;
+  STATE.interactionComponentData = componentData;
+  STATE.componentHandlerCount = 0;
+  STATE.modalHandlers = new Map();
+  try {
+    // Record all modal handlers
+    command();
+
+    // Find the correct modal handler, allowing users to add custom state after
+    // our custom ID
+    customId = customId.substring(0, customId.indexOf("#") + 1);
+    return STATE.modalHandlers.get(customId);
+  } finally {
+    STATE.commandId = undefined;
+    STATE.interactionComponentData = undefined;
+    STATE.modalHandlers = undefined;
   }
 }

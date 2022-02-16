@@ -5,6 +5,8 @@ import type {
   APIMessage,
   APIMessageApplicationCommandInteraction,
   APIMessageComponentInteractionData,
+  APIModalInteractionResponseCallbackData,
+  APIModalSubmitInteraction,
   APIUser,
   APIUserApplicationCommandInteraction,
 } from "discord-api-types/v9";
@@ -24,19 +26,31 @@ import { Awaitable, AwaitableGenerator, WithFileAttachments } from "../helpers";
 // This is why ':', '/', '$' or '#' characters are not allowed in command names.
 
 export const $update = /* @__PURE__ */ Symbol("$update");
+export const $modal = /* @__PURE__ */ Symbol("$modal");
 
 // ==== Message Responses ===
 
 export type MessageResponse =
   WithFileAttachments<APIInteractionResponseCallbackData>;
 
+export type ModalResponse = APIModalInteractionResponseCallbackData & {
+  [$modal]: true;
+};
+
+export function isModalResponse(
+  res: MessageResponse | ModalResponse
+): res is ModalResponse {
+  return (res as any)[$modal] === true;
+}
+
 /**
  * - For `CHANNEL_MESSAGE_WITH_SOURCE`, return `MessageResponse`
  * - For `DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE`, yield nothing, then return `MessageResponse`
+ * - For `MODAL`, return `ModalResponse`
  * @see https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object-interaction-callback-type
  */
 export type CommandResponse =
-  | Awaitable<MessageResponse>
+  | Awaitable<MessageResponse | ModalResponse>
   | AwaitableGenerator<void, MessageResponse, never>;
 
 // The `| symbol` here should be `| typeof $update` but that doesn't
@@ -49,7 +63,7 @@ export type CommandResponse =
  * @see https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object-interaction-callback-type
  */
 export type ComponentHandlerResponse =
-  | Awaitable<MessageResponse & { [$update]?: boolean }>
+  | Awaitable<(MessageResponse & { [$update]?: boolean }) | ModalResponse>
   | AwaitableGenerator<void | symbol, MessageResponse>;
 
 // ==== Command Handlers ===
@@ -106,6 +120,13 @@ export type ComponentHandler<
   Data = APIMessageComponentInteractionData
 > = (
   interaction: APIMessageComponentInteraction<Data>,
+  env: Env,
+  ctx: ExecutionContext
+) => ComponentHandlerResponse;
+
+/** @see {CommandResponse} */
+export type ModalHandler<Env = unknown> = (
+  interaction: APIModalSubmitInteraction,
   env: Env,
   ctx: ExecutionContext
 ) => ComponentHandlerResponse;

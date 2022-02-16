@@ -31,6 +31,7 @@ export const InteractionType = {
   APPLICATION_COMMAND: 2,
   MESSAGE_COMPONENT: 3,
   APPLICATION_COMMAND_AUTOCOMPLETE: 4,
+  MODAL_SUBMIT: 5,
 } as const;
 
 /** @see https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object-interaction-callback-type */
@@ -41,6 +42,7 @@ export const InteractionResponseType = {
   DEFERRED_MESSAGE_UPDATE: 6,
   UPDATE_MESSAGE: 7,
   APPLICATION_COMMAND_AUTOCOMPLETE_RESULT: 8,
+  MODAL: 9,
 } as const;
 
 /** @see https://discord.com/developers/docs/resources/channel#channel-object-channel-types */
@@ -63,6 +65,7 @@ export const ComponentType = {
   ACTION_ROW: 1,
   BUTTON: 2,
   SELECT_MENU: 3,
+  TEXT_INPUT: 4,
 } as const;
 
 /** @see https://discord.com/developers/docs/interactions/message-components#button-object-button-styles */
@@ -72,6 +75,12 @@ export const ButtonStyle = {
   SUCCESS: 3,
   DANGER: 4,
   LINK: 5,
+} as const;
+
+/** @see https://discord.com/developers/docs/interactions/message-components#text-inputs-text-input-styles */
+export const TextInputStyle = {
+  SHORT: 1,
+  PARAGRAPH: 2,
 } as const;
 
 /** @see https://discord.com/developers/docs/resources/channel#allowed-mentions-object-allowed-mention-types */

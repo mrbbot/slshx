@@ -5,6 +5,7 @@ import {
   handleApplicationCommandInteraction,
   handleAutocompleteInteraction,
   handleMessageComponentInteraction,
+  handleModalSubmitInteraction,
   handlePingInteraction,
   validateInteraction,
 } from "./interactions";
@@ -50,6 +51,8 @@ export function createHandler<Env>(opts: Options<Env>) {
       interaction.type === InteractionType.APPLICATION_COMMAND_AUTOCOMPLETE
     ) {
       return handleAutocompleteInteraction(interaction, hopts, env, ctx);
+    } else if (interaction.type === InteractionType.MODAL_SUBMIT) {
+      return handleModalSubmitInteraction(interaction, hopts, env, ctx);
     }
 
     return new Response("Bad Request", { status: 400 });

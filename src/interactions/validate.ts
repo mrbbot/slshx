@@ -1,4 +1,7 @@
-import type { APIInteraction } from "discord-api-types/v9";
+import type {
+  APIInteraction,
+  APIModalSubmitInteraction,
+} from "discord-api-types/v9";
 import { hexDecode } from "../helpers";
 
 const ENCODER = /* @__PURE__ */ new TextEncoder();
@@ -6,7 +9,7 @@ const ENCODER = /* @__PURE__ */ new TextEncoder();
 export async function validateInteraction(
   publicKeyData: Uint8Array,
   request: Request
-): Promise<APIInteraction | false> {
+): Promise<APIInteraction | APIModalSubmitInteraction | false> {
   const signature = hexDecode(
     String(request.headers.get("X-Signature-Ed25519"))
   );
