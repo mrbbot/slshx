@@ -1,5 +1,5 @@
 import test from "ava";
-import { APIModalInteractionResponseCallbackData } from "discord-api-types/v9";
+import type { APIModalInteractionResponseCallbackData } from "discord-api-types/v9";
 import {
   $actionRow,
   $actionRowChild,

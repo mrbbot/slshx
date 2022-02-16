@@ -1,5 +1,8 @@
 import test from "ava";
-import type { APIActionRowComponent } from "discord-api-types/v9";
+import type {
+  APIActionRowComponent,
+  APIActionRowComponentTypes,
+} from "discord-api-types/v9";
 import {
   $actionRow,
   $actionRowChild,
@@ -11,7 +14,7 @@ import {
 } from "../../../src";
 
 test("creates action row component", (t) => {
-  const row: APIActionRowComponent = (
+  const row: APIActionRowComponent<APIActionRowComponentTypes> = (
     <Row>
       <Button id="1" />
       {[<Button id="2" />, [<Button id="3" />]]}

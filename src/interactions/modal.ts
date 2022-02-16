@@ -1,4 +1,4 @@
-import { APIModalSubmitInteraction } from "discord-api-types/v9";
+import type { APIModalSubmitInteraction } from "discord-api-types/v9";
 import { ComponentType } from "../api";
 import { instantiateModalHandler } from "../commands";
 import { HandlerOptions } from "../options";

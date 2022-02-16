@@ -1,6 +1,7 @@
 import test from "ava";
 import type {
   APIActionRowComponent,
+  APIActionRowComponentTypes,
   APIButtonComponent,
 } from "discord-api-types/v9";
 // noinspection ES6UnusedImports
@@ -124,7 +125,7 @@ test("can use fragments in components", (t) => {
   ];
   t.deepEqual(buttons, expectedButtons);
 
-  const row: APIActionRowComponent = (
+  const row: APIActionRowComponent<APIActionRowComponentTypes> = (
     <Row>
       <ConfirmButtons yesId="yes_custom_id" noId="no_custom_id" />
     </Row>

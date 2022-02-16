@@ -1,5 +1,5 @@
 import test from "ava";
-import { APITextInputComponent } from "discord-api-types/v9";
+import type { APITextInputComponent } from "discord-api-types/v9";
 import {
   $actionRowChild,
   ComponentType,
