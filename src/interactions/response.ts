@@ -6,7 +6,7 @@ import {
   APIInteractionResponseUpdateMessage,
   APIModalInteractionResponse,
   APIModalSubmitInteraction,
-} from "discord-api-types";
+} from "discord-api-types/v9";
 import {
   InteractionResponseType,
   createFollowupMessage,

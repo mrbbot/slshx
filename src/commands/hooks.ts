@@ -55,7 +55,7 @@ export function useSelectMenu<Env>(
   return customId;
 }
 
-export function useTextInput(): [id: string, value: string] {
+export function useInput(): [id: string, value: string] {
   const customId = useCustomId();
   const value = STATE.interactionComponentData?.get(customId) ?? "";
   return [customId, value];

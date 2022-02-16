@@ -15,6 +15,7 @@ import {
   useChannel,
   useDefaultPermission,
   useDescription,
+  useInput,
   useInteger,
   useMentionable,
   useModal,
@@ -22,7 +23,6 @@ import {
   useRole,
   useSelectMenu,
   useString,
-  useTextInput,
   useUser,
 } from "../../src";
 
@@ -308,8 +308,8 @@ function buttons(): CommandHandler {
 
 function modals(): CommandHandler {
   useDescription("Modals!");
-  const [shortId, shortValue] = useTextInput();
-  const [longId, longValue] = useTextInput();
+  const [shortId, shortValue] = useInput();
+  const [longId, longValue] = useInput();
   const modalId = useModal<Env>((interaction, env, ctx) => {
     // Check values are correct, with EXTRA_DATA added by us
     t.is(interaction.data!.custom_id, "slshx:1/modals$2#EXTRA_DATA");

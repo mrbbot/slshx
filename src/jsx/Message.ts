@@ -30,9 +30,7 @@ export interface MessageProps {
   children?: (
     | Child
     | (APIEmbed & { [$embed]: true })
-    | (APIActionRowComponent<APIMessageComponent> & {
-        [$actionRow]: true;
-      })
+    | (APIActionRowComponent<APIMessageComponent> & { [$actionRow]: true })
     | (APIButtonComponent & { [$actionRowChild]: true })
     | (APISelectMenuComponent & { [$actionRowChild]: true })
   )[];

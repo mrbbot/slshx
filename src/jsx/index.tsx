@@ -19,3 +19,4 @@ export type { Child } from "./helpers";
 export * from "./components";
 export * from "./embeds";
 export * from "./Message";
+export * from "./Modal";
