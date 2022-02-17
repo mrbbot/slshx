@@ -314,6 +314,7 @@ export const EXPECTED_COMMANDS: RESTPostAPIApplicationCommandsJSONBody[] = [
   },
   { name: "buttons", description: "Buttons and select menus!" },
   { name: "modals", description: "Modals!" },
+  { name: "errors", description: "Errors!" },
   {
     name: "User Command",
     type: 2, // ApplicationCommandType.USER

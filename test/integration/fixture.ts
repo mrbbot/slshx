@@ -367,6 +367,19 @@ function modals(): CommandHandler {
   };
 }
 
+function errors(): CommandHandler {
+  useDescription("Errors!");
+  useButton(() => {
+    throw new Error("Button error!");
+  });
+  useModal(() => {
+    throw new TypeError("Modal error!");
+  });
+  return () => {
+    throw "Error-ish!";
+  };
+}
+
 function userCommand(): UserCommandHandler {
   const buttonId = useButton((interaction) => {
     t.is(interaction.data.custom_id, "slshx:2/User Command$0#");
@@ -411,6 +424,7 @@ const handler = createHandler({
     autocomplete,
     buttons,
     modals,
+    errors,
   },
   userCommands: { "User Command": userCommand },
   messageCommands: { "Message Command": messageCommand },

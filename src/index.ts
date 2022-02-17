@@ -1,5 +1,5 @@
 import { InteractionType } from "./api";
-import { deployCommands } from "./commands";
+import { CommandResponse, deployCommands } from "./commands";
 import { hexDecode } from "./helpers";
 import {
   handleApplicationCommandInteraction,
@@ -7,10 +7,27 @@ import {
   handleMessageComponentInteraction,
   handleModalSubmitInteraction,
   handlePingInteraction,
+  transformResponse,
   validateInteraction,
 } from "./interactions";
 import { handleLanding } from "./landing";
 import { HandlerOptions, Options } from "./options";
+
+export function transformError(error?: Error): CommandResponse {
+  const title = `🚨  ${error?.name ?? "Error"}`;
+  let description = `${error?.message ?? String(error)}`;
+  if (error?.stack) description += `\n\`\`\`${error.stack}\`\`\``;
+  return {
+    embeds: [
+      {
+        title,
+        description,
+        color: 0xfc484a,
+        footer: { text: "Errors are only returned during development" },
+      },
+    ],
+  };
+}
 
 export function createHandler<Env>(opts: Options<Env>) {
   const publicKeyData =
@@ -38,21 +55,29 @@ export function createHandler<Env>(opts: Options<Env>) {
       );
     }
     const hopts = opts as HandlerOptions<Env>;
-    const interaction = await validateInteraction(publicKeyData, request);
-    if (!interaction) return new Response("Unauthorized", { status: 401 });
+    const int = await validateInteraction(publicKeyData, request);
+    if (!int) return new Response("Unauthorized", { status: 401 });
 
-    if (interaction.type === InteractionType.PING) {
+    try {
+      if (int.type === InteractionType.APPLICATION_COMMAND) {
+        return await handleApplicationCommandInteraction(int, hopts, env, ctx);
+      } else if (int.type === InteractionType.MESSAGE_COMPONENT) {
+        return await handleMessageComponentInteraction(int, hopts, env, ctx);
+      } else if (int.type === InteractionType.MODAL_SUBMIT) {
+        return await handleModalSubmitInteraction(int, hopts, env, ctx);
+      }
+    } catch (e: any) {
+      // @ts-expect-error globalThis isn't updated with custom globals
+      if (globalThis.MINIFLARE) {
+        return transformResponse(int, hopts, ctx, transformError(e));
+      }
+      throw e;
+    }
+
+    if (int.type === InteractionType.APPLICATION_COMMAND_AUTOCOMPLETE) {
+      return handleAutocompleteInteraction(int, hopts, env, ctx);
+    } else if (int.type === InteractionType.PING) {
       return handlePingInteraction();
-    } else if (interaction.type === InteractionType.APPLICATION_COMMAND) {
-      return handleApplicationCommandInteraction(interaction, hopts, env, ctx);
-    } else if (interaction.type === InteractionType.MESSAGE_COMPONENT) {
-      return handleMessageComponentInteraction(interaction, hopts, env, ctx);
-    } else if (
-      interaction.type === InteractionType.APPLICATION_COMMAND_AUTOCOMPLETE
-    ) {
-      return handleAutocompleteInteraction(interaction, hopts, env, ctx);
-    } else if (interaction.type === InteractionType.MODAL_SUBMIT) {
-      return handleModalSubmitInteraction(interaction, hopts, env, ctx);
     }
 
     return new Response("Bad Request", { status: 400 });
