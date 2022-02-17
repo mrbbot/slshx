@@ -15,7 +15,7 @@ import { HandlerOptions, Options } from "./options";
 
 export function transformError(error?: Error): CommandResponse {
   const title = `🚨  ${error?.name ?? "Error"}`;
-  let description = `${error?.message ?? String(error)}`;
+  let description = `${error?.message ?? error}`;
   if (error?.stack) description += `\n\`\`\`${error.stack}\`\`\``;
   return {
     embeds: [
