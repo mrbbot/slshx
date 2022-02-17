@@ -10,6 +10,7 @@ import { TextEncoder } from "util";
 import { Request, RequestInfo, RequestInit, Response } from "@miniflare/core";
 import { ExecutionContext } from "ava";
 import type {
+  APIAttachment,
   APIBaseInteraction,
   APIInteractionDataResolvedChannel,
   APIMessage,
@@ -165,6 +166,18 @@ export const ROLE: APIRole = {
   mentionable: false,
 };
 
+export const ATTACHMENT: APIAttachment = {
+  id: "0",
+  filename: "image.png",
+  content_type: "image/png",
+  size: 50000,
+  url: "https://cdn.discordapp.com/ephemeral-attachments/0/0/image.png",
+  proxy_url: "https://media.discordapp.net/ephemeral-attachments/0/0/image.png",
+  width: 250,
+  height: 250,
+  ephemeral: true,
+};
+
 export const EXPECTED_COMMANDS: RESTPostAPIApplicationCommandsJSONBody[] = [
   {
     name: "add",
@@ -240,6 +253,7 @@ export const EXPECTED_COMMANDS: RESTPostAPIApplicationCommandsJSONBody[] = [
       { type: 8, name: "role", description: "Role option" },
       { type: 9, name: "mentionable", description: "Mentionable option" },
       { type: 10, name: "number", description: "Number option" },
+      { type: 11, name: "attachment", description: "Attachment option" },
     ],
   },
   {
@@ -301,6 +315,11 @@ export const EXPECTED_COMMANDS: RESTPostAPIApplicationCommandsJSONBody[] = [
         type: 9,
         name: "mentionable",
         description: "Mentionable",
+      },
+      {
+        type: 11,
+        name: "attachment",
+        description: "Attachment",
       },
       {
         type: 3,

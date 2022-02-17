@@ -23,6 +23,7 @@ export const ApplicationCommandOptionType = {
   ROLE: 8,
   MENTIONABLE: 9,
   NUMBER: 10,
+  ATTACHMENT: 11,
 } as const;
 
 /** @see https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-object-interaction-type */

@@ -10,6 +10,7 @@ import {
   UserCommandHandler,
   createFollowupMessage,
   createHandler,
+  useAttachment,
   useBoolean,
   useButton,
   useChannel,
@@ -87,6 +88,7 @@ function all(): CommandHandler {
   const roleOpt = useRole("role", "Role option");
   const mentionableOpt = useMentionable("mentionable", "Mentionable option");
   const numberOpt = useNumber("number", "Number option");
+  const attachmentOpt = useAttachment("attachment", "Attachment option");
   return async () => {
     // Check promise response
     await scheduler.wait(0);
@@ -100,6 +102,7 @@ function all(): CommandHandler {
     t.is(typeof roleOpt, "object");
     t.is(typeof mentionableOpt, "object");
     t.is(typeof numberOpt, "number");
+    t.is(typeof attachmentOpt, "object");
 
     return {
       embeds: [
@@ -114,6 +117,7 @@ function all(): CommandHandler {
             { name: "role", value: JSON.stringify(roleOpt) },
             { name: "mentionable", value: JSON.stringify(mentionableOpt) },
             { name: "number", value: String(numberOpt) },
+            { name: "attachment", value: JSON.stringify(attachmentOpt) },
           ],
         },
       ],
@@ -176,6 +180,7 @@ function autocomplete(): CommandHandler {
   const channel = useChannel("channel", "Channel");
   const role = useRole("role", "Role");
   const mentionable = useMentionable("mentionable", "Mentionable");
+  const attachment = useAttachment("attachment", "Attachment");
 
   const s: string = useString<Env>("s", "String", {
     required: true,
@@ -189,6 +194,7 @@ function autocomplete(): CommandHandler {
       t.deepEqual(channel, { id: "2" } as any);
       t.deepEqual(role, { id: "3" } as any);
       t.deepEqual(mentionable, { id: "4" } as any);
+      t.deepEqual(attachment, { id: "5" } as any);
 
       return [
         `integer ${i}`, // before

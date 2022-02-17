@@ -1,6 +1,7 @@
 import type { APIApplicationCommandAutocompleteInteraction } from "discord-api-types/payloads/v9/_interactions/autocomplete";
 import type {
   APIApplicationCommandOptionChoice,
+  APIAttachment,
   APIInteractionDataResolvedChannel,
   APIMessageButtonInteractionData,
   APIMessageSelectMenuInteractionData,
@@ -414,4 +415,31 @@ export function useNumber<Env>(
     description,
     options
   );
+}
+
+export function useAttachment<Env>(
+  name: string,
+  description: string,
+  options?: OptionalOption<never /* cannot be autocompleted */, Env>
+): APIAttachment | null;
+export function useAttachment<Env>(
+  name: string,
+  description: string,
+  options: RequiredOption<never /* cannot be autocompleted */, Env>
+): APIAttachment;
+export function useAttachment<Env>(
+  name: string,
+  description: string,
+  options?: CombinedOption<string, Env>
+): APIAttachment | null {
+  const id = useOption(
+    ApplicationCommandOptionType.ATTACHMENT,
+    "",
+    name,
+    description,
+    options
+  );
+  // Autocomplete interactions may not include resolved, so return just the ID
+  const fallback = id === null ? null : ({ id } as APIAttachment);
+  return STATE.interactionResolved?.attachments?.[id!] ?? fallback;
 }

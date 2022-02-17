@@ -9,6 +9,7 @@ import type {
   RESTPostAPIInteractionFollowupJSONBody,
 } from "discord-api-types/v9";
 import {
+  ATTACHMENT,
   CHANNEL,
   Console,
   INTERACTION,
@@ -151,11 +152,13 @@ test("responds with all option types", async (t) => {
         { name: "role", type: 8, value: "snowflake-ish3" }, // 8 = ApplicationCommandOptionType.ROLE
         { name: "mentionable", type: 9, value: "snowflake-ish4" }, // 9 = ApplicationCommandOptionType.MENTIONABLE
         { name: "number", type: 10, value: 3.141 }, // 10 = ApplicationCommandOptionType.NUMBER
+        { name: "attachment", type: 11, value: "snowflake-ish5" }, // 11 = ApplicationCommandOptionType.ATTACHMENT
       ],
       resolved: {
         users: { "snowflake-ish1": USER },
         channels: { "snowflake-ish2": CHANNEL },
         roles: { "snowflake-ish3": ROLE, "snowflake-ish4": ROLE },
+        attachments: { "snowflake-ish5": ATTACHMENT },
       },
     },
   };
@@ -177,6 +180,7 @@ test("responds with all option types", async (t) => {
             { name: "role", value: JSON.stringify(ROLE) },
             { name: "mentionable", value: JSON.stringify(ROLE) },
             { name: "number", value: "3.141" },
+            { name: "attachment", value: JSON.stringify(ATTACHMENT) },
           ],
         },
       ],
