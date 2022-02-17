@@ -29,7 +29,8 @@ function validateName(name: string): void {
 function recordCommand<Env>(
   commandId: string,
   name: string,
-  command: Command<Env>
+  command: Command<Env>,
+  requireDescription = true
 ): Pick<
   APIApplicationCommand,
   "name" | "description" | "options" | "default_permission"
@@ -42,6 +43,13 @@ function recordCommand<Env>(
   try {
     // Run hooks and record options
     command();
+
+    // Validate description if required
+    if (requireDescription && !STATE.recordingDescription) {
+      throw new TypeError(
+        `Command "${name}" must call useDescription("...") with a non-empty string`
+      );
+    }
 
     return {
       name,
@@ -128,7 +136,8 @@ function recordContextMenuCommands<Env>(
   for (const [name, command] of Object.entries(commands)) {
     validateName(name);
     const id = `${PREFIX}:${type}/${name}`;
-    results.push({ type, ...recordCommand(id, name, command) });
+    // `false` means description isn't required
+    results.push({ type, ...recordCommand(id, name, command, false) });
   }
   return results;
 }
