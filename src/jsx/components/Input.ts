@@ -26,6 +26,7 @@ export function Input(
     value: props.value,
     min_length: props.minLength,
     max_length: props.maxLength,
-    required: props.required,
+    // `required` defaults to true, so explicitly set to false if falsy
+    required: !!props.required,
   };
 }

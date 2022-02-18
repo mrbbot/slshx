@@ -65,7 +65,7 @@ test("creates modal", (t) => {
             value: undefined,
             min_length: undefined,
             max_length: undefined,
-            required: undefined,
+            required: false,
           },
         ],
       },

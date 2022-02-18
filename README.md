@@ -4,7 +4,7 @@
 [Discord commands](https://discord.com/developers/docs/interactions/application-commands)
 that run on [Cloudflare Workers](https://workers.cloudflare.com/), using a
 React-inspired syntax. It focuses on providing a great local development
-experience, powered by [🔥 Miniflare 2](https://v2.miniflare.dev/).
+experience, powered by [🔥 Miniflare](https://miniflare.dev/).
 
 <!-- prettier-ignore-start -->
 ```tsx
@@ -15,7 +15,7 @@ function add(): CommandHandler {
   const a = useNumber("a", "1st number", { required: true });
   const b = useNumber("b", "2nd number", { required: true });
   return (interaction, env, ctx) => (
-     <Message ephemeral>{a} + {b} = {a + b}</Message>
+    <Message ephemeral>{a} + {b} = {a + b}</Message>
   );
 };
 
@@ -44,14 +44,15 @@ export default { fetch: handler };
 
 ## Quick*ish* Start
 
-> ⚠️ To enable auto-deployments on reload, Slshx requires the
-> [`--global-async-io` Miniflare flag](https://v2.miniflare.dev/core/standards#global-functionality-limits)
-> to be set.
-
 1. Clone the [`slshx-starter`](https://github.com/mrbbot/slshx-starter)
-   repository. This includes a [Miniflare](https://v2.miniflare.dev/) and
+   repository. This includes a [Miniflare](https://miniflare.dev/) and
    [`esbuild`](https://esbuild.github.io/) setup that removes unneeded local
    development code when deploying to Workers.
+
+   > ⚠️ To enable auto-deployments on reload, Slshx requires the
+   > [`--global-async-io` Miniflare flag](https://miniflare.dev/core/standards#global-functionality-limits)
+   > to be set. `slshx-starter` automatically enables this for you.
+
 2. Copy the `env.example.jsonc` file to `env.jsonc`. ⚠️ Do not commit this file.
 3. Create a new application in the
    [Discord Developer Portal](https://discord.com/developers/applications). Copy
@@ -220,7 +221,7 @@ Some types have additional optional fields that control acceptable values.
 <!-- prettier-ignore-start -->
 ```tsx
 import { ChannelType } from "slshx";
-import type { APIUser, APIInteractionDataResolvedChannel, APIRole } from "discord-api-types/v9";
+import type { APIUser, APIInteractionDataResolvedChannel, APIRole, APIAttachment } from "discord-api-types/v9";
 
 function cmd(): CommandHandler {
   useDescription("Command demonstrating option types");
@@ -256,6 +257,9 @@ function cmd(): CommandHandler {
   const n1 = useNumber("name", "Description");
   //    └ number | null
   const n2 = useNumber("name", "Description", { min: 5, max: 100 });
+  
+  const a = useAttachment("name", "Description");
+  //    └ APIAttachment | null
 
   return () => {}; // ...
 };
@@ -346,6 +350,11 @@ function cover(): CommandHandler<Env> {
   return () => {}; // ...
 }
 ```
+
+> ⚠️ Discord does not include full user, channel, role, mentionable or
+> attachment objects in autocomplete interactions. If a user specifies a value
+> for one of these options, the hook will return a partial object of the form
+> `{ id: "..." }` instead.
 
 ### Subcommands
 
@@ -1144,6 +1153,115 @@ function selects(): CommandHandler {
 
 ![Select Menu](./.github/screenshots/select.png)
 
+## Using Modals
+
+[Modals](https://discord.com/developers/docs/interactions/receiving-and-responding#responding-to-an-interaction)
+allow you to respond to commands or message component interactions with dialog
+boxes containing text inputs. Instead of returning a `<Message>`, return a
+`<Modal>` or a plain message object with the `[$modal]` property set to `true`.
+
+To generate a custom modal ID including the required Slshx routing information,
+call the `useModal` hook. This takes a callback function taking an
+`interaction`, `env`, and `ctx` that will be called when the modal is submitted.
+
+To add text inputs, call the `useInput` hook. This returns an `[id, value]`
+tuple containing a custom ID to identify the input and the submitted value. Note
+that the `value` should only be used inside `useModal` callback functions.
+
+<!-- prettier-ignore-start -->
+```tsx
+import { CommandHandler, useInput, useModal, createElement, Message, Modal, Input, $modal, ComponentType, TextInputStyle } from "slshx";
+
+export function modals(): CommandHandler<Env> {
+  // ...
+  const [nameId, nameValue] = useInput();
+  const [messageId, messageValue] = useInput();
+  const modalId = useModal<Env>((interaction, env, ctx) => {
+    //                           └ APIModalSubmitInteraction
+
+    // With JSX
+    return <Message>Hello {nameValue}! {messageValue}</Message>;
+
+    // Without JSX
+    return { content: `Hello ${nameValue}! ${messageValue}` };
+  });
+
+  return () => {
+    // With JSX
+    return (
+      <Modal id={modalId} title="Send Message">
+        <Input
+          id={nameId} // Only `id` and `label` are required
+          label="Name"
+          required
+          value="Initial value"
+          minLength={1}
+        />
+        <Input
+          id={messageId}
+          label="Message"
+          placeholder="Something to send"
+          maxLength={1000}
+          paragraph // Multiline input
+        />
+      </Modal>
+    );
+
+    // Without JSX
+    return {
+      [$modal]: true,
+      custom_id: modalId,
+      title: "Send Message",
+      components: [
+        {
+          type: ComponentType.ACTION_ROW,
+          components: [
+            {
+              type: ComponentType.TEXT_INPUT,
+              style: TextInputStyle.SHORT,
+              custom_id: nameId,
+              label: "Name",
+              required: true,
+              value: "Initial value",
+              min_length: 1,
+            },
+          ],
+        },
+        {
+          type: ComponentType.ACTION_ROW,
+          components: [
+            {
+              type: ComponentType.TEXT_INPUT,
+              style: TextInputStyle.PARAGRAPH,
+              custom_id: messageId,
+              label: "Message",
+              placeholder: "Something to send",
+              required: false, // Inputs are required by default
+              max_length: 1000,
+            },
+          ],
+        },
+      ],
+    };
+  };
+}
+```
+<!-- prettier-ignore-end -->
+
+![Modal](./.github/screenshots/modal.png)
+
+![Modal Submission](./.github/screenshots/modal-submit.png)
+
+## Errors
+
+During development, if a command, message component, or modal submission handler
+throws an error, Slshx will respond with the message and stack trace. In
+production, the interaction will fail.
+
+![Development Error](./.github/screenshots/error-development.png)
+
+![Production Error](./.github/screenshots/error-production.png)
+
 ## Deploying Commands Globally
 
 Once you're happy with your commands, you can deploy them globally, making them
@@ -1273,9 +1391,11 @@ If an API does not have Slshx bindings, you can use the
   `URLSearchParams` (sent as `application/x-www-form-urlencoded`), or an
   arbitrary JSON-serializable object (sent as `application/json`). If `body` is
   falsy, it's omitted.
-- `auth` can be an object of the form `{ bearer: string }` (what `getBearerAuth`
-  returns) to use `Bearer` token authentication, or
-  `{ username: string; password: string }` to use HTTP `Basic` authentication
+- `auth` can be an object of the form:
+  - `{ bearer: string }` (what `getBearerAuth` returns) to use `Bearer` token
+    authentication
+  - `{ username: string; password: string }` to use HTTP `Basic` authentication
+  - `{ bot: string }` to use `Bot` token authentication
 
 This function is generic in `Body` and `Result`. You can find types for these in
 the `discord-api-types` package. See [`src/api/`](./src/api) for examples of
