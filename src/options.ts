@@ -13,6 +13,7 @@ export interface Options<Env = unknown> {
   commands?: ChatInputCommands<Env>;
   userCommands?: UserCommands<Env>;
   messageCommands?: MessageCommands<Env>;
+  skipKeyValidation?: boolean;
 }
 
 export type HandlerOptions<Env> = Omit<Options<Env>, "applicationId"> &
