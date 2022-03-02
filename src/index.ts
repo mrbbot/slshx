@@ -55,7 +55,11 @@ export function createHandler<Env>(opts: Options<Env>) {
       );
     }
     const hopts = opts as HandlerOptions<Env>;
-    const int = await validateInteraction(publicKeyData, request);
+    const int = await validateInteraction(
+      publicKeyData,
+      request,
+      opts.skipKeyValidation
+    );
     if (!int) return new Response("Unauthorized", { status: 401 });
 
     try {
