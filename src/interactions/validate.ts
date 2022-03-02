@@ -8,14 +8,17 @@ const ENCODER = /* @__PURE__ */ new TextEncoder();
 
 export async function validateInteraction(
   publicKeyData: Uint8Array,
-  request: Request
+  request: Request,
+  skipKeyValidation = false
 ): Promise<APIInteraction | APIModalSubmitInteraction | false> {
+  const requestBody = await request.text();
+  if (skipKeyValidation) return true && JSON.parse(requestBody);
+
   const signature = hexDecode(
     String(request.headers.get("X-Signature-Ed25519"))
   );
 
   const timestamp = String(request.headers.get("X-Signature-Timestamp"));
-  const body = await request.text();
 
   const publicKey = await crypto.subtle.importKey(
     "raw",
@@ -29,8 +32,8 @@ export async function validateInteraction(
     "NODE-ED25519",
     publicKey,
     signature,
-    ENCODER.encode(timestamp + body)
+    ENCODER.encode(timestamp + requestBody)
   );
 
-  return valid && JSON.parse(body);
+  return valid && JSON.parse(requestBody);
 }
