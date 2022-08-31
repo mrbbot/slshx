@@ -7,7 +7,7 @@ import type {
   APIInteractionResponsePong,
   APIPingInteraction,
   RESTPostAPIInteractionFollowupJSONBody,
-} from "discord-api-types/v9";
+} from "discord-api-types/v10";
 import {
   ATTACHMENT,
   CHANNEL,
@@ -58,7 +58,7 @@ test("responds with DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE", async (t) => {
   const fetch = async (request: Request) => {
     t.is(
       request.url,
-      `https://discord.com/api/v9/webhooks/app_id/${INTERACTION.token}`
+      `https://discord.com/api/v10/webhooks/app_id/${INTERACTION.token}`
     );
     const body = await request.json<RESTPostAPIInteractionFollowupJSONBody>();
     t.deepEqual(body, { content: "5 - 2 = 7" });

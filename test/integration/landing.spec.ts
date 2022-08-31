@@ -61,7 +61,7 @@ test("deploys commands globally", async (t) => {
     // token that expires 1 hour from now
     if (
       request.method === "POST" &&
-      request.url === "https://discord.com/api/v9/oauth2/token"
+      request.url === "https://discord.com/api/v10/oauth2/token"
     ) {
       const [type, auth] = request.headers.get("Authorization")!.split(" ");
       t.is(type, "Basic");
@@ -86,7 +86,7 @@ test("deploys commands globally", async (t) => {
     // return nothing: the result should be ignored if successful
     if (
       request.method === "PUT" &&
-      request.url === "https://discord.com/api/v9/applications/app_id/commands"
+      request.url === "https://discord.com/api/v10/applications/app_id/commands"
     ) {
       t.is(request.headers.get("Authorization"), `Bearer access token`);
       t.deepEqual(await request.json(), EXPECTED_COMMANDS);
@@ -116,8 +116,8 @@ test("deploys commands globally", async (t) => {
   t.regex(body, /\(changes may take up to an hour to propagate\)/);
 
   t.deepEqual(requests, [
-    "POST https://discord.com/api/v9/oauth2/token",
-    "PUT https://discord.com/api/v9/applications/app_id/commands",
+    "POST https://discord.com/api/v10/oauth2/token",
+    "PUT https://discord.com/api/v10/applications/app_id/commands",
   ]);
   const n = EXPECTED_COMMANDS.length;
   t.is(await c.next(), "[slshx] Building and deploying commands...");
@@ -133,9 +133,9 @@ test("deploys commands globally", async (t) => {
   });
   t.is(res.status, 200);
   t.deepEqual(requests, [
-    "POST https://discord.com/api/v9/oauth2/token",
-    "PUT https://discord.com/api/v9/applications/app_id/commands",
-    "PUT https://discord.com/api/v9/applications/app_id/commands",
+    "POST https://discord.com/api/v10/oauth2/token",
+    "PUT https://discord.com/api/v10/applications/app_id/commands",
+    "PUT https://discord.com/api/v10/applications/app_id/commands",
   ]);
 
   // Check doesn't deploy when deployed :D

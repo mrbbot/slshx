@@ -1,7 +1,7 @@
 import type {
   RESTPostOAuth2ClientCredentialsResult,
   Snowflake,
-} from "discord-api-types/v9";
+} from "discord-api-types/v10";
 import { log } from "../helpers";
 
 export interface APIBasicAuth {
@@ -40,7 +40,7 @@ export async function call<Body, Result>(
   body?: Body,
   auth?: APIAuth
 ): Promise<Result> {
-  const url = `https://discord.com/api/v9${path}`;
+  const url = `https://discord.com/api/v10${path}`;
 
   const headers: HeadersInit = {};
   const init: RequestInit = { method, headers };

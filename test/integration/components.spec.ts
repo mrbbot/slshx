@@ -8,7 +8,7 @@ import type {
   APIInteractionResponseUpdateMessage,
   APIMessageComponentInteraction,
   RESTPostAPIInteractionFollowupJSONBody,
-} from "discord-api-types/v9";
+} from "discord-api-types/v10";
 import {
   Console,
   INTERACTION,
@@ -136,7 +136,7 @@ test("responds with DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE in response to button p
   const fetch = async (request: Request) => {
     t.is(
       request.url,
-      `https://discord.com/api/v9/webhooks/app_id/${INTERACTION.token}`
+      `https://discord.com/api/v10/webhooks/app_id/${INTERACTION.token}`
     );
     const body = await request.json<RESTPostAPIInteractionFollowupJSONBody>();
     t.deepEqual(body, { content: "Deferred new button clicked" });
@@ -169,7 +169,7 @@ test("responds with DEFERRED_MESSAGE_UPDATE in response to button press", async 
   const fetch = async (request: Request) => {
     t.is(
       request.url,
-      `https://discord.com/api/v9/webhooks/app_id/${INTERACTION.token}/messages/@original`
+      `https://discord.com/api/v10/webhooks/app_id/${INTERACTION.token}/messages/@original`
     );
     const body = await request.json<RESTPostAPIInteractionFollowupJSONBody>();
     t.deepEqual(body, { content: "Deferred update button clicked" });

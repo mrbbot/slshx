@@ -2,7 +2,7 @@ import type {
   APIActionRowComponent,
   APIActionRowComponentTypes,
   APIMessageComponent,
-} from "discord-api-types/v9";
+} from "discord-api-types/v10";
 import { ComponentType } from "../../api";
 
 export const $actionRow = /* @__PURE__ */ Symbol("$actionRow");

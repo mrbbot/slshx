@@ -168,7 +168,7 @@ including the invoking `user`, server (`guild_id`) and continuation `token`.
 <!-- prettier-ignore-start -->
 ```tsx
 import { CommandHandler, createElement, createHandler, useDescription, useNumber } from "slshx";
-import type { APIChatInputApplicationCommandInteraction } from "discord-api-types/v9";
+import type { APIChatInputApplicationCommandInteraction } from "discord-api-types/v10";
 
 type Env = { KV_NAMESPACE: KVNamespace; SECRET: string };
 
@@ -221,7 +221,7 @@ Some types have additional optional fields that control acceptable values.
 <!-- prettier-ignore-start -->
 ```tsx
 import { ChannelType } from "slshx";
-import type { APIUser, APIInteractionDataResolvedChannel, APIRole, APIAttachment } from "discord-api-types/v9";
+import type { APIUser, APIInteractionDataResolvedChannel, APIRole, APIAttachment } from "discord-api-types/v10";
 
 function cmd(): CommandHandler {
   useDescription("Command demonstrating option types");
@@ -309,7 +309,7 @@ suggestions. Similarly to choices, you can optionally provide a `name` for the
 suggestion, which will be displayed instead.
 
 ```tsx
-import type { APIApplicationCommandAutocompleteInteraction } from "discord-api-types/payloads/v9/_interactions/autocomplete"; // 🙁
+import type { APIApplicationCommandAutocompleteInteraction } from "discord-api-types/payloads/v10/_interactions/autocomplete"; // 🙁
 
 type Env = { SONG_NAMESPACE: KVNamespace };
 
@@ -418,7 +418,7 @@ responses.
 <!-- prettier-ignore-start -->
 ```tsx
 import { Message, UserCommandHandler, createElement, createHandler } from "slshx";
-import type { APIUser, APIUserApplicationCommandInteraction } from "discord-api-types/v9";
+import type { APIUser, APIUserApplicationCommandInteraction } from "discord-api-types/v10";
 
 function greet(): UserCommandHandler {
   return (interaction, env, ctx, user) => {
@@ -451,7 +451,7 @@ the command was invoked on.
 <!-- prettier-ignore-start -->
 ```tsx
 import { Message, MessageCommand, createElement, createHandler } from "slshx";
-import type { APIMessage, APIMessageApplicationCommandInteraction } from "discord-api-types/v9";
+import type { APIMessage, APIMessageApplicationCommandInteraction } from "discord-api-types/v10";
 
 type Env = { BOOKMARKS_NAMESPACE: KVNamespace };
 
@@ -808,7 +808,7 @@ to a component interaction:
 
    ```tsx
    import { CommandHandler, useButton, APIMessageComponentInteraction } from "slshx";
-   import type { APIMessageButtonInteractionData } from "discord-api-types/v9";
+   import type { APIMessageButtonInteractionData } from "discord-api-types/v10";
 
    function cmd(): CommandHandler {
      const buttonId = useButton((interaction, env, ctx) => {
@@ -1081,7 +1081,7 @@ the `default` option.
 <!-- prettier-ignore-start -->
 ```tsx
 import { ComponentType, createElement, Message, Select, Option, $update, useSelectMenu, CommandHandler, APIMessageComponentInteraction } from "slshx";
-import type { APIMessageSelectMenuInteractionData } from "discord-api-types/v9";
+import type { APIMessageSelectMenuInteractionData } from "discord-api-types/v10";
 
 function selects(): CommandHandler {
   // ...
@@ -1385,7 +1385,7 @@ If an API does not have Slshx bindings, you can use the
 `call(method, path, body?, auth?)` function:
 
 - `method` must be a standard HTTP method
-- `path` will be appended to `https://discord.com/api/v9` to form the endpoint
+- `path` will be appended to `https://discord.com/api/v10` to form the endpoint
   URL
 - `body` can be an instance of `FormData` (sent as `multipart/form-data`),
   `URLSearchParams` (sent as `application/x-www-form-urlencoded`), or an

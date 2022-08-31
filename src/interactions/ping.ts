@@ -1,4 +1,4 @@
-import type { APIInteractionResponsePong } from "discord-api-types/v9";
+import type { APIInteractionResponsePong } from "discord-api-types/v10";
 import { InteractionResponseType } from "../api";
 import { jsonResponse } from "../helpers";
 

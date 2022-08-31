@@ -4,7 +4,7 @@ import type {
   RESTPutAPIApplicationCommandPermissionsJSONBody,
   RESTPutAPIApplicationCommandPermissionsResult,
   Snowflake,
-} from "discord-api-types/v9";
+} from "discord-api-types/v10";
 import { APIBearerAuth, call } from "./helpers";
 
 /** @see https://discord.com/developers/docs/interactions/application-commands#get-guild-application-command-permissions */

@@ -1,7 +1,7 @@
 import type {
   APIEmbed,
   APIInteractionResponseCallbackData,
-} from "discord-api-types/v9";
+} from "discord-api-types/v10";
 import { $update, WithFileAttachments } from "../../src";
 
 export type APIMessage =

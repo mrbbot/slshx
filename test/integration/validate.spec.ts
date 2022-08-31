@@ -3,7 +3,7 @@ import test from "ava";
 import type {
   APIInteractionResponsePong,
   APIPingInteraction,
-} from "discord-api-types/v9";
+} from "discord-api-types/v10";
 import {
   INTERACTION,
   algorithm,

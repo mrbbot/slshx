@@ -4,7 +4,7 @@ import type {
   APIInteractionResponseChannelMessageWithSource,
   APIModalInteractionResponse,
   APIModalSubmitInteraction,
-} from "discord-api-types/v9";
+} from "discord-api-types/v10";
 import { INTERACTION, dispatchInteraction, ignite } from "./helpers";
 
 test("responds with MODAL", async (t) => {

@@ -7,7 +7,7 @@ import type {
   APIApplicationCommandInteraction,
   APIInteractionResponseChannelMessageWithSource,
   RESTPostAPIInteractionFollowupJSONBody,
-} from "discord-api-types/v9";
+} from "discord-api-types/v10";
 import { Console, INTERACTION, dispatchInteraction, ignite } from "./helpers";
 
 test("responds with file attachments", async (t) => {
@@ -15,7 +15,7 @@ test("responds with file attachments", async (t) => {
     // Check followup message with files is also handled correctly
     t.is(
       request.url,
-      `https://discord.com/api/v9/webhooks/app_id/${INTERACTION.token}`
+      `https://discord.com/api/v10/webhooks/app_id/${INTERACTION.token}`
     );
     const body = await request.formData();
 
