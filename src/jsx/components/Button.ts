@@ -1,7 +1,7 @@
 import type {
   APIButtonComponent,
   APIMessageComponentEmoji,
-} from "discord-api-types/v9";
+} from "discord-api-types/v10";
 import { ButtonStyle, ComponentType } from "../../api";
 import { Child, childrenContent } from "../helpers";
 import { $actionRowChild } from "./Row";

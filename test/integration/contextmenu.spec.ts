@@ -5,7 +5,7 @@ import type {
   APIMessageApplicationCommandInteraction,
   APIMessageComponentInteraction,
   APIUserApplicationCommandInteraction,
-} from "discord-api-types/v9";
+} from "discord-api-types/v10";
 import {
   INTERACTION,
   MESSAGE,

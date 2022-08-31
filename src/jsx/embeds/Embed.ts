@@ -5,7 +5,7 @@ import type {
   APIEmbedFooter,
   APIEmbedImage,
   APIEmbedProvider,
-} from "discord-api-types/v9";
+} from "discord-api-types/v10";
 import { Child, isEmptyChild } from "../helpers";
 import { $field } from "./Field";
 

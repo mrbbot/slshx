@@ -1,5 +1,5 @@
 import test from "ava";
-import type { APIEmbed } from "discord-api-types/v9";
+import type { APIEmbed } from "discord-api-types/v10";
 import { $embed, $field, Embed, Field, createElement } from "../../../src";
 import { emptyEmbed } from "../helpers";
 

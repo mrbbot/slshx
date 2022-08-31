@@ -17,7 +17,7 @@ import type {
   APIRole,
   APIUser,
   RESTPostAPIApplicationCommandsJSONBody,
-} from "discord-api-types/v9";
+} from "discord-api-types/v10";
 import { Miniflare, MiniflareOptions } from "miniflare";
 
 const __filename = fileURLToPath(import.meta.url);

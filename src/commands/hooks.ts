@@ -1,4 +1,4 @@
-import type { APIApplicationCommandAutocompleteInteraction } from "discord-api-types/payloads/v9/_interactions/autocomplete";
+import type { APIApplicationCommandAutocompleteInteraction } from "discord-api-types/payloads/v10/_interactions/autocomplete";
 import type {
   APIApplicationCommandOptionChoice,
   APIAttachment,
@@ -8,7 +8,7 @@ import type {
   APIRole,
   APIUser,
   ChannelType,
-} from "discord-api-types/v9";
+} from "discord-api-types/v10";
 import { ApplicationCommandOptionType } from "../api";
 import { Awaitable, ValueOf } from "../helpers";
 import { STATE } from "./state";

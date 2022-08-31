@@ -6,7 +6,7 @@ import type {
   APIInteractionResponseChannelMessageWithSource,
   APIMessageComponentInteraction,
   APIModalSubmitInteraction,
-} from "discord-api-types/v9";
+} from "discord-api-types/v10";
 import { INTERACTION, MESSAGE, dispatchInteraction, ignite } from "./helpers";
 
 const ERROR: Partial<APIEmbed> = {

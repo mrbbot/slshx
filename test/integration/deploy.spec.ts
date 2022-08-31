@@ -18,7 +18,7 @@ test("auto-deploys commands to test guild", async (t) => {
     // token that expires 1 hour from now
     if (
       request.method === "POST" &&
-      request.url === "https://discord.com/api/v9/oauth2/token"
+      request.url === "https://discord.com/api/v10/oauth2/token"
     ) {
       const [type, auth] = request.headers.get("Authorization")!.split(" ");
       t.is(type, "Basic");
@@ -44,7 +44,7 @@ test("auto-deploys commands to test guild", async (t) => {
     if (
       request.method === "PUT" &&
       request.url ===
-        "https://discord.com/api/v9/applications/app_id/guilds/guild/commands"
+        "https://discord.com/api/v10/applications/app_id/guilds/guild/commands"
     ) {
       t.is(request.headers.get("Authorization"), `Bearer access token`);
       t.deepEqual(await request.json(), expectedCommands);
@@ -67,7 +67,7 @@ test("auto-deploys commands to test guild", async (t) => {
   t.is(await c.next(), "[slshx] Building and deploying commands...");
   t.is(await c.next(), "[slshx] Refreshing access token...");
   t.is(await c.next(), "[slshx] POST /oauth2/token: 200");
-  t.deepEqual(requests, ["POST https://discord.com/api/v9/oauth2/token"]);
+  t.deepEqual(requests, ["POST https://discord.com/api/v10/oauth2/token"]);
   t.is(await c.next(), `[slshx] Deploying ${n} commands to server guild...`);
   t.not(CACHE.bearerAuth, undefined);
   // Commands cache shouldn't be updated until successful deploy
@@ -77,8 +77,8 @@ test("auto-deploys commands to test guild", async (t) => {
     "[slshx] PUT /applications/app_id/guilds/guild/commands: 204"
   );
   t.deepEqual(requests, [
-    "POST https://discord.com/api/v9/oauth2/token",
-    "PUT https://discord.com/api/v9/applications/app_id/guilds/guild/commands",
+    "POST https://discord.com/api/v10/oauth2/token",
+    "PUT https://discord.com/api/v10/applications/app_id/guilds/guild/commands",
   ]);
   t.is(await c.next(), `[slshx] Deployed ${n} commands to server guild!`);
   t.deepEqual(JSON.parse(CACHE.jsonCommands!), expectedCommands);

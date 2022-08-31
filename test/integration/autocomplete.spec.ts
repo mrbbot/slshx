@@ -1,6 +1,6 @@
 import test from "ava";
-import type { APIApplicationCommandAutocompleteInteraction } from "discord-api-types/payloads/v9/_interactions/autocomplete";
-import type { APIApplicationCommandAutocompleteResponse } from "discord-api-types/v9";
+import type { APIApplicationCommandAutocompleteInteraction } from "discord-api-types/payloads/v10/_interactions/autocomplete";
+import type { APIApplicationCommandAutocompleteResponse } from "discord-api-types/v10";
 import { INTERACTION, dispatchInteraction, ignite } from "./helpers";
 
 test("responds with APPLICATION_COMMAND_AUTOCOMPLETE_RESULT", async (t) => {

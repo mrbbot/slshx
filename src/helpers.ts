@@ -1,4 +1,4 @@
-import type { APIInteractionResponseCallbackData } from "discord-api-types/v9";
+import type { APIInteractionResponseCallbackData } from "discord-api-types/v10";
 
 export const PREFIX = "slshx";
 

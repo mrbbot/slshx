@@ -9,7 +9,7 @@ import type {
   APIModalSubmitInteraction,
   APIUser,
   APIUserApplicationCommandInteraction,
-} from "discord-api-types/v9";
+} from "discord-api-types/v10";
 import { InteractionType } from "../api";
 import { Awaitable, AwaitableGenerator, WithFileAttachments } from "../helpers";
 

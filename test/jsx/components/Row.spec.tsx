@@ -2,7 +2,7 @@ import test from "ava";
 import type {
   APIActionRowComponent,
   APIActionRowComponentTypes,
-} from "discord-api-types/v9";
+} from "discord-api-types/v10";
 import {
   $actionRow,
   $actionRowChild,

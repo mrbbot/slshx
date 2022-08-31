@@ -1,9 +1,9 @@
-import type { APIApplicationCommandAutocompleteInteraction } from "discord-api-types/payloads/v9/_interactions/autocomplete";
+import type { APIApplicationCommandAutocompleteInteraction } from "discord-api-types/payloads/v10/_interactions/autocomplete";
 import type {
   APIApplicationCommandInteraction,
   APIApplicationCommandInteractionDataBasicOption,
   APIApplicationCommandInteractionDataOption,
-} from "discord-api-types/v9";
+} from "discord-api-types/v10";
 import { ApplicationCommandType } from "../api";
 import {
   AnyCommand,

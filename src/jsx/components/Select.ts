@@ -1,7 +1,7 @@
 import type {
   APISelectMenuComponent,
   APISelectMenuOption,
-} from "discord-api-types/v9";
+} from "discord-api-types/v10";
 import { ComponentType } from "../../api";
 import { $actionRowChild } from "./Row";
 

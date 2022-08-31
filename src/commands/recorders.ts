@@ -4,7 +4,7 @@ import type {
   RESTPostAPIApplicationCommandsJSONBody,
   RESTPostAPIChatInputApplicationCommandsJSONBody,
   RESTPostAPIContextMenuApplicationCommandsJSONBody,
-} from "discord-api-types/v9";
+} from "discord-api-types/v10";
 import { ApplicationCommandOptionType, ApplicationCommandType } from "../api";
 import { PREFIX } from "../helpers";
 import { Options } from "../options";

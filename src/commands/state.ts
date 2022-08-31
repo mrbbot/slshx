@@ -2,7 +2,7 @@ import type {
   APIApplicationCommandInteractionDataBasicOption,
   APIApplicationCommandOption,
   APIChatInputApplicationCommandInteractionDataResolved,
-} from "discord-api-types/v9";
+} from "discord-api-types/v10";
 import { AutocompleteHandler } from "./hooks";
 import { ComponentHandler, ModalHandler } from "./types";
 
