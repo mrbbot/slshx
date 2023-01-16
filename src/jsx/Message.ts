@@ -3,7 +3,7 @@ import type {
   APIButtonComponent,
   APIEmbed,
   APIInteractionResponseCallbackData,
-  APIMessageComponent,
+  APIMessageActionRowComponent,
   APISelectMenuComponent,
   Snowflake,
 } from "discord-api-types/v9";
@@ -30,7 +30,9 @@ export interface MessageProps {
   children?: (
     | Child
     | (APIEmbed & { [$embed]: true })
-    | (APIActionRowComponent<APIMessageComponent> & { [$actionRow]: true })
+    | (APIActionRowComponent<APIMessageActionRowComponent> & {
+        [$actionRow]: true;
+      })
     | (APIButtonComponent & { [$actionRowChild]: true })
     | (APISelectMenuComponent & { [$actionRowChild]: true })
   )[];
@@ -44,7 +46,7 @@ export function Message(
   // Sort children into correct slots
   let content = undefined;
   const embeds: APIEmbed[] = [];
-  const components: APIActionRowComponent<APIMessageComponent>[] = [];
+  const components: APIActionRowComponent<APIMessageActionRowComponent>[] = [];
   for (const child of props.children?.flat(Infinity) ?? []) {
     if (isEmptyChild(child)) continue;
     if ((child as any)[$embed]) {
