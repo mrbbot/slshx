@@ -18,6 +18,7 @@ interface State {
   recordingNameLocalizations?: LocalizationMap;
 
   recordingDefaultPermission?: boolean;
+  recordingDMPermission?: boolean;
 
   // Incoming interaction data
   interactionOptions?: Map<

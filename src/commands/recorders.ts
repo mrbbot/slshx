@@ -39,6 +39,7 @@ function recordCommand<Env>(
   | "options"
   | "default_permission"
   | "description_localizations"
+  | "dm_permission"
 > {
   STATE.commandId = commandId;
   STATE.recordingOptions = [];
@@ -65,6 +66,7 @@ function recordCommand<Env>(
         : undefined,
       default_permission: STATE.recordingDefaultPermission,
       description_localizations: STATE.recordingDescriptionLocalizations,
+      dm_permission: STATE.recordingDMPermission,
     };
   } finally {
     STATE.commandId = undefined;

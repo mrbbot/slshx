@@ -64,6 +64,13 @@ export function useDefaultPermission(permission: boolean): void {
   if (STATE.recordingOptions) STATE.recordingDefaultPermission = permission;
 }
 
+export function useDMPermission(permission: boolean): void {
+  if (!STATE.commandId) {
+    throw new Error(`Hooks must be called inside a command`);
+  }
+  if (STATE.recordingOptions) STATE.recordingDMPermission = permission;
+}
+
 // ========================================================================================================
 // | Message Component & Modal Hooks:                                                                     |
 // | https://discord.com/developers/docs/interactions/message-components#component-object-component-types |
