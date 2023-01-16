@@ -143,24 +143,30 @@ export type AutocompleteHandler<T, Env> = (
   ctx: ExecutionContext
 ) => Awaitable<Choice<T>[]>;
 
-export interface OptionalOption<T, Env> {
+export interface LocalizationOption {
+  localizations?: {
+    name?: LocalizationMap;
+    description?: LocalizationMap;
+  };
+}
+export interface OptionalOption<T, Env> extends LocalizationOption {
   required?: false;
   autocomplete?: AutocompleteHandler<T, Env>;
 }
-export interface RequiredOption<T, Env> {
+export interface RequiredOption<T, Env> extends LocalizationOption {
   required: true;
   autocomplete?: AutocompleteHandler<T, Env>;
 }
 
 export interface OptionalChoicesOption<
   Choices extends ReadonlyArray<Choice<string | number>>
-> {
+> extends LocalizationOption {
   required?: false;
   choices: Choices;
 }
 export interface RequiredChoicesOption<
   Choices extends ReadonlyArray<Choice<string | number>>
-> {
+> extends LocalizationOption {
   required: true;
   choices: Choices;
 }
@@ -183,7 +189,8 @@ type CombinedOption<T, Env> = {
   choices?: ReadonlyArray<Choice<T>>;
 } & NumericOption &
   ChannelOption &
-  StringOption;
+  StringOption &
+  LocalizationOption;
 
 function useOption<T, Env>(
   type: ValueOf<typeof ApplicationCommandOptionType>,
@@ -214,7 +221,9 @@ function useOption<T, Env>(
     STATE.recordingOptions.push({
       type: type as number,
       name,
+      name_localizations: options?.localizations?.name,
       description,
+      description_localizations: options?.localizations?.description,
       required: options?.required,
       autocomplete: options?.autocomplete && true,
       choices: normaliseChoices(options?.choices as any) as any,

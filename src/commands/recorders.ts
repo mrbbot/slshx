@@ -44,6 +44,8 @@ function recordCommand<Env>(
   STATE.commandId = commandId;
   STATE.recordingOptions = [];
   STATE.recordingDescription = "";
+  STATE.recordingDescriptionLocalizations = {};
+  STATE.recordingNameLocalizations = {};
   STATE.recordingDefaultPermission = undefined;
   STATE.componentHandlerCount = 0;
   try {
