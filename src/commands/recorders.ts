@@ -33,7 +33,12 @@ function recordCommand<Env>(
   requireDescription = true
 ): Pick<
   APIApplicationCommand,
-  "name" | "description" | "options" | "default_permission"
+  | "name"
+  | "name_localizations"
+  | "description"
+  | "options"
+  | "default_permission"
+  | "description_localizations"
 > {
   STATE.commandId = commandId;
   STATE.recordingOptions = [];
@@ -53,11 +58,13 @@ function recordCommand<Env>(
 
     return {
       name,
+      name_localizations: STATE.recordingNameLocalizations,
       description: STATE.recordingDescription,
       options: STATE.recordingOptions.length
         ? STATE.recordingOptions
         : undefined,
       default_permission: STATE.recordingDefaultPermission,
+      description_localizations: STATE.recordingDescriptionLocalizations,
     };
   } finally {
     STATE.commandId = undefined;

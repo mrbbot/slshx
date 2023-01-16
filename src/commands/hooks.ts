@@ -8,6 +8,7 @@ import type {
   APIRole,
   APIUser,
   ChannelType,
+  LocalizationMap,
 } from "discord-api-types/v9";
 import { ApplicationCommandOptionType } from "../api";
 import { Awaitable, ValueOf } from "../helpers";
@@ -19,6 +20,41 @@ export function useDescription(description: string): void {
     throw new Error(`Hooks must be called inside a command`);
   }
   if (STATE.recordingOptions) STATE.recordingDescription = description;
+}
+
+export function useLocalizations({
+  name,
+  description,
+}: {
+  name?: LocalizationMap;
+  description?: LocalizationMap;
+}): void {
+  if (!STATE.commandId) {
+    throw new Error(`Hooks must be called inside a command`);
+  }
+  if (STATE.recordingOptions) {
+    if (name) STATE.recordingNameLocalizations = name;
+    if (description) STATE.recordingDescriptionLocalizations = description;
+  }
+}
+
+export function useNameLocalizations(localizations: LocalizationMap): void {
+  if (!STATE.commandId) {
+    throw new Error(`Hooks must be called inside a command`);
+  }
+  if (STATE.recordingOptions) {
+    STATE.recordingNameLocalizations = localizations;
+  }
+}
+
+export function useDescriptionLocalizations(
+  localizations: LocalizationMap
+): void {
+  if (!STATE.commandId) {
+    throw new Error(`Hooks must be called inside a command`);
+  }
+  if (STATE.recordingOptions)
+    STATE.recordingDescriptionLocalizations = localizations;
 }
 
 export function useDefaultPermission(permission: boolean): void {

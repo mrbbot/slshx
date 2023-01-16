@@ -1,7 +1,8 @@
 import type {
   APIApplicationCommandInteractionDataBasicOption,
   APIApplicationCommandOption,
-  APIChatInputApplicationCommandInteractionDataResolved,
+  APIInteractionDataResolved,
+  LocalizationMap,
 } from "discord-api-types/v9";
 import { AutocompleteHandler } from "./hooks";
 import { ComponentHandler, ModalHandler } from "./types";
@@ -13,6 +14,9 @@ interface State {
   // Recorded command for deployment
   recordingOptions?: APIApplicationCommandOption[];
   recordingDescription: string;
+  recordingDescriptionLocalizations?: LocalizationMap;
+  recordingNameLocalizations?: LocalizationMap;
+
   recordingDefaultPermission?: boolean;
 
   // Incoming interaction data
@@ -20,7 +24,7 @@ interface State {
     string,
     APIApplicationCommandInteractionDataBasicOption
   >; // name -> value
-  interactionResolved?: APIChatInputApplicationCommandInteractionDataResolved;
+  interactionResolved?: APIInteractionDataResolved;
   interactionComponentData?: Map<string, string>; // custom_id -> data
 
   // Component interaction and modal submit handlers
