@@ -162,6 +162,10 @@ export interface NumericOption {
   min?: number;
   max?: number;
 }
+export interface StringOption {
+  minLength?: number;
+  maxLength?: number;
+}
 export interface ChannelOption {
   types?: ChannelType[];
 }
@@ -171,7 +175,8 @@ type CombinedOption<T, Env> = {
   autocomplete?: AutocompleteHandler<T, Env>;
   choices?: ReadonlyArray<Choice<T>>;
 } & NumericOption &
-  ChannelOption;
+  ChannelOption &
+  StringOption;
 
 function useOption<T, Env>(
   type: ValueOf<typeof ApplicationCommandOptionType>,
@@ -209,6 +214,8 @@ function useOption<T, Env>(
       channel_types: options?.types as any,
       min_value: options?.min,
       max_value: options?.max,
+      min_length: options?.minLength,
+      max_length: options?.maxLength,
     });
   }
   return def;
@@ -217,27 +224,27 @@ function useOption<T, Env>(
 export function useString<Env>(
   name: string,
   description: string,
-  options?: OptionalOption<string, Env>
+  options?: OptionalOption<string, Env> & StringOption
 ): string | null;
 export function useString<Env>(
   name: string,
   description: string,
-  options: RequiredOption<string, Env>
+  options: RequiredOption<string, Env> & StringOption
 ): string;
 export function useString<Choices extends ReadonlyArray<Choice<string>>>(
   name: string,
   description: string,
-  options: OptionalChoicesOption<Choices>
+  options: OptionalChoicesOption<Choices> & StringOption
 ): ChoiceValue<Choices[number]> | null;
 export function useString<Choices extends ReadonlyArray<Choice<string>>>(
   name: string,
   description: string,
-  options: RequiredChoicesOption<Choices>
+  options: RequiredChoicesOption<Choices> & StringOption
 ): ChoiceValue<Choices[number]>;
 export function useString<Env>(
   name: string,
   description: string,
-  options?: CombinedOption<string, Env>
+  options?: CombinedOption<string, Env> & StringOption
 ): string | null {
   return useOption(
     ApplicationCommandOptionType.STRING,
