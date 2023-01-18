@@ -14,10 +14,12 @@ import {
   useBoolean,
   useButton,
   useChannel,
+  useDMPermission,
   useDefaultPermission,
   useDescription,
   useInput,
   useInteger,
+  useLocalizations,
   useMentionable,
   useModal,
   useNumber,
@@ -143,6 +145,56 @@ function choices(): CommandHandler {
   // Implicitly check returning synchronous generator that immediately returns
   return function* () {
     return { content: `${n} ${s}` };
+  };
+}
+
+function translate(): CommandHandler {
+  useDescription("Translates a string");
+  useLocalizations({
+    description: {
+      nl: "Vertaalt een string",
+      fr: "Traduit une chaîne",
+    },
+    name: {
+      nl: "vertalen",
+      fr: "traduire",
+    },
+  });
+  const text = useString("string", "String to translate", {
+    required: true,
+    localizations: {
+      description: {
+        nl: "Tekst om te vertalen",
+        fr: "Chaîne à traduire",
+      },
+      name: {
+        nl: "tekst",
+        fr: "chaîne",
+      },
+    },
+  });
+  return () => {
+    return { content: `Translated: ${text}` };
+  };
+}
+
+function limit(): CommandHandler {
+  useDescription("Limit the amount of characters in a string");
+  const text = useString("string", "String to limit", {
+    required: true,
+    minLength: 3,
+    maxLength: 5,
+  });
+  return () => {
+    return { content: `Limited: ${text}` };
+  };
+}
+
+function nodm(): CommandHandler {
+  useDescription("Can't be used in DMs");
+  useDMPermission(false);
+  return () => {
+    return { content: "Success!" };
   };
 }
 
@@ -427,6 +479,9 @@ const handler = createHandler({
     all,
     choices,
     files,
+    translate,
+    limit,
+    nodm,
     autocomplete,
     buttons,
     modals,

@@ -42,7 +42,5 @@ interface State {
 
 export const STATE: State = {
   recordingDescription: "",
-  recordingDescriptionLocalizations: {},
-  recordingNameLocalizations: {},
   componentHandlerCount: 0,
 };

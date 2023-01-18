@@ -285,6 +285,53 @@ export const EXPECTED_COMMANDS: RESTPostAPIApplicationCommandsJSONBody[] = [
   },
   { name: "files", description: "Uploads some files" },
   {
+    name: "translate",
+    description: "Translates a string",
+    name_localizations: {
+      nl: "vertalen",
+      fr: "traduire",
+    },
+    description_localizations: {
+      nl: "Vertaalt een string",
+      fr: "Traduit une chaîne",
+    },
+    options: [
+      {
+        type: 3,
+        name: "string",
+        description: "String to translate",
+        required: true,
+        name_localizations: {
+          nl: "tekst",
+          fr: "chaîne",
+        },
+        description_localizations: {
+          nl: "Tekst om te vertalen",
+          fr: "Chaîne à traduire",
+        },
+      },
+    ],
+  },
+  {
+    name: "limit",
+    description: "Limit the amount of characters in a string",
+    options: [
+      {
+        type: 3,
+        name: "string",
+        description: "String to limit",
+        required: true,
+        min_length: 3,
+        max_length: 5,
+      },
+    ],
+  },
+  {
+    name: "nodm",
+    description: "Can't be used in DMs",
+    dm_permission: false,
+  },
+  {
     name: "autocomplete",
     description: "Autocompletes an option",
     options: [

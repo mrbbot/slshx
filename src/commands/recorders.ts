@@ -44,10 +44,11 @@ function recordCommand<Env>(
   STATE.commandId = commandId;
   STATE.recordingOptions = [];
   STATE.recordingDescription = "";
-  STATE.recordingDescriptionLocalizations = {};
-  STATE.recordingNameLocalizations = {};
+  STATE.recordingDescriptionLocalizations = undefined;
+  STATE.recordingNameLocalizations = undefined;
   STATE.recordingDefaultPermission = undefined;
   STATE.componentHandlerCount = 0;
+  STATE.recordingDMPermission = undefined;
   try {
     // Run hooks and record options
     command();
