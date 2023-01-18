@@ -33,13 +33,22 @@ function recordCommand<Env>(
   requireDescription = true
 ): Pick<
   APIApplicationCommand,
-  "name" | "description" | "options" | "default_permission"
+  | "name"
+  | "name_localizations"
+  | "description"
+  | "options"
+  | "default_permission"
+  | "description_localizations"
+  | "dm_permission"
 > {
   STATE.commandId = commandId;
   STATE.recordingOptions = [];
   STATE.recordingDescription = "";
+  STATE.recordingDescriptionLocalizations = undefined;
+  STATE.recordingNameLocalizations = undefined;
   STATE.recordingDefaultPermission = undefined;
   STATE.componentHandlerCount = 0;
+  STATE.recordingDMPermission = undefined;
   try {
     // Run hooks and record options
     command();
@@ -53,11 +62,14 @@ function recordCommand<Env>(
 
     return {
       name,
+      name_localizations: STATE.recordingNameLocalizations,
       description: STATE.recordingDescription,
       options: STATE.recordingOptions.length
         ? STATE.recordingOptions
         : undefined,
       default_permission: STATE.recordingDefaultPermission,
+      description_localizations: STATE.recordingDescriptionLocalizations,
+      dm_permission: STATE.recordingDMPermission,
     };
   } finally {
     STATE.commandId = undefined;

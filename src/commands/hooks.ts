@@ -8,6 +8,7 @@ import type {
   APIRole,
   APIUser,
   ChannelType,
+  LocalizationMap,
 } from "discord-api-types/v9";
 import { ApplicationCommandOptionType } from "../api";
 import { Awaitable, ValueOf } from "../helpers";
@@ -21,11 +22,53 @@ export function useDescription(description: string): void {
   if (STATE.recordingOptions) STATE.recordingDescription = description;
 }
 
+export function useLocalizations({
+  name,
+  description,
+}: {
+  name?: LocalizationMap;
+  description?: LocalizationMap;
+}): void {
+  if (!STATE.commandId) {
+    throw new Error(`Hooks must be called inside a command`);
+  }
+  if (STATE.recordingOptions) {
+    if (name) STATE.recordingNameLocalizations = name;
+    if (description) STATE.recordingDescriptionLocalizations = description;
+  }
+}
+
+export function useNameLocalizations(localizations: LocalizationMap): void {
+  if (!STATE.commandId) {
+    throw new Error(`Hooks must be called inside a command`);
+  }
+  if (STATE.recordingOptions) {
+    STATE.recordingNameLocalizations = localizations;
+  }
+}
+
+export function useDescriptionLocalizations(
+  localizations: LocalizationMap
+): void {
+  if (!STATE.commandId) {
+    throw new Error(`Hooks must be called inside a command`);
+  }
+  if (STATE.recordingOptions)
+    STATE.recordingDescriptionLocalizations = localizations;
+}
+
 export function useDefaultPermission(permission: boolean): void {
   if (!STATE.commandId) {
     throw new Error(`Hooks must be called inside a command`);
   }
   if (STATE.recordingOptions) STATE.recordingDefaultPermission = permission;
+}
+
+export function useDMPermission(permission: boolean): void {
+  if (!STATE.commandId) {
+    throw new Error(`Hooks must be called inside a command`);
+  }
+  if (STATE.recordingOptions) STATE.recordingDMPermission = permission;
 }
 
 // ========================================================================================================
@@ -100,24 +143,30 @@ export type AutocompleteHandler<T, Env> = (
   ctx: ExecutionContext
 ) => Awaitable<Choice<T>[]>;
 
-export interface OptionalOption<T, Env> {
+export interface LocalizationOption {
+  localizations?: {
+    name?: LocalizationMap;
+    description?: LocalizationMap;
+  };
+}
+export interface OptionalOption<T, Env> extends LocalizationOption {
   required?: false;
   autocomplete?: AutocompleteHandler<T, Env>;
 }
-export interface RequiredOption<T, Env> {
+export interface RequiredOption<T, Env> extends LocalizationOption {
   required: true;
   autocomplete?: AutocompleteHandler<T, Env>;
 }
 
 export interface OptionalChoicesOption<
   Choices extends ReadonlyArray<Choice<string | number>>
-> {
+> extends LocalizationOption {
   required?: false;
   choices: Choices;
 }
 export interface RequiredChoicesOption<
   Choices extends ReadonlyArray<Choice<string | number>>
-> {
+> extends LocalizationOption {
   required: true;
   choices: Choices;
 }
@@ -125,6 +174,10 @@ export interface RequiredChoicesOption<
 export interface NumericOption {
   min?: number;
   max?: number;
+}
+export interface StringOption {
+  minLength?: number;
+  maxLength?: number;
 }
 export interface ChannelOption {
   types?: ChannelType[];
@@ -135,7 +188,9 @@ type CombinedOption<T, Env> = {
   autocomplete?: AutocompleteHandler<T, Env>;
   choices?: ReadonlyArray<Choice<T>>;
 } & NumericOption &
-  ChannelOption;
+  ChannelOption &
+  StringOption &
+  LocalizationOption;
 
 function useOption<T, Env>(
   type: ValueOf<typeof ApplicationCommandOptionType>,
@@ -166,13 +221,17 @@ function useOption<T, Env>(
     STATE.recordingOptions.push({
       type: type as number,
       name,
+      name_localizations: options?.localizations?.name,
       description,
+      description_localizations: options?.localizations?.description,
       required: options?.required,
       autocomplete: options?.autocomplete && true,
       choices: normaliseChoices(options?.choices as any) as any,
       channel_types: options?.types as any,
       min_value: options?.min,
       max_value: options?.max,
+      min_length: options?.minLength,
+      max_length: options?.maxLength,
     });
   }
   return def;
@@ -181,27 +240,27 @@ function useOption<T, Env>(
 export function useString<Env>(
   name: string,
   description: string,
-  options?: OptionalOption<string, Env>
+  options?: OptionalOption<string, Env> & StringOption
 ): string | null;
 export function useString<Env>(
   name: string,
   description: string,
-  options: RequiredOption<string, Env>
+  options: RequiredOption<string, Env> & StringOption
 ): string;
 export function useString<Choices extends ReadonlyArray<Choice<string>>>(
   name: string,
   description: string,
-  options: OptionalChoicesOption<Choices>
+  options: OptionalChoicesOption<Choices> & StringOption
 ): ChoiceValue<Choices[number]> | null;
 export function useString<Choices extends ReadonlyArray<Choice<string>>>(
   name: string,
   description: string,
-  options: RequiredChoicesOption<Choices>
+  options: RequiredChoicesOption<Choices> & StringOption
 ): ChoiceValue<Choices[number]>;
 export function useString<Env>(
   name: string,
   description: string,
-  options?: CombinedOption<string, Env>
+  options?: CombinedOption<string, Env> & StringOption
 ): string | null {
   return useOption(
     ApplicationCommandOptionType.STRING,

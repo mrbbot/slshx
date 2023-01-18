@@ -1,6 +1,6 @@
 import type {
   APIActionRowComponent,
-  APIModalComponent,
+  APIModalActionRowComponent,
   APITextInputComponent,
 } from "discord-api-types/v9";
 import { ComponentType } from "../api";
@@ -12,13 +12,15 @@ export interface ModalProps {
   id: string;
   title: string;
   children?: (
-    | (APIActionRowComponent<APIModalComponent> & { [$actionRow]: true })
+    | (APIActionRowComponent<APIModalActionRowComponent> & {
+        [$actionRow]: true;
+      })
     | (APITextInputComponent & { [$actionRowChild]: true })
   )[];
 }
 
 export function Modal(props: ModalProps): ModalResponse {
-  const components: APIActionRowComponent<APIModalComponent>[] = [];
+  const components: APIActionRowComponent<APIModalActionRowComponent>[] = [];
   for (const child of props.children?.flat(Infinity) ?? []) {
     if (isEmptyChild(child)) continue;
     if ((child as any)[$actionRow]) {
